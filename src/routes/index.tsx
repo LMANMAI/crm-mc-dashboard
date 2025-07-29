@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { HomePage, AuthPage } from "../pages";
+import { HomePage, AuthPage, PedidosPage } from "../pages";
 import AdminLayout from "../components/layout/AdminLayout";
 
 const AppRouter = () => (
@@ -7,6 +7,7 @@ const AppRouter = () => (
     <Routes>
       <Route element={<AdminLayout />}>
         <Route path="/" element={<HomePage />} />
+        <Route path="/pedidos" element={<PedidosPage />} />
       </Route>
       <Route path="/auth" element={<AuthPage />} />
     </Routes>

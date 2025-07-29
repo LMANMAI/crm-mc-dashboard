@@ -6,6 +6,7 @@ import {
   Text,
   Link as ChakraLink,
   IconButton,
+  Flex,
 } from "@chakra-ui/react";
 import {
   FaPlus,
@@ -24,7 +25,7 @@ import { Tooltip } from "../../ui/tooltip";
 
 const links = [
   { label: "Nuevo pedido", icon: FaPlus, to: "/admin/new-order" },
-  { label: "Mis pedidos", icon: FaClipboardList, to: "/admin/orders" },
+  { label: "Mis pedidos", icon: FaClipboardList, to: "/pedidos" },
   { label: "Cuenta corriente", icon: FaFileInvoice, to: "/admin/account" },
   { label: "Mis datos", icon: FaUser, to: "/admin/profile" },
   { label: "Notificaciones", icon: FaBell, to: "/admin/notifications" },
@@ -65,28 +66,30 @@ const Sidebar = () => {
 
       <VStack align="stretch" gap={2}>
         {links.map((link) => (
-          <Tooltip
-            key={link.label}
-            content={link.label}
-            //placement="right"
-            //hasArrow
-          >
-            <ChakraLink
-              as={NavLink}
-              //to={link.to}
-              display="flex"
-              alignItems="center"
-              gap={collapsed ? 0 : 3}
-              px={3}
-              py={2}
-              borderRadius="md"
-              justifyContent={collapsed ? "center" : "flex-start"}
-              _hover={{ bg: "teal.100" }}
-              //_activeLink={{ bg: "teal.200", fontWeight: "bold" }}
+          <Tooltip key={link.label} content={link.label}>
+            <NavLink
+              to={link.to}
+              style={({ isActive }) => ({
+                textDecoration: "none",
+              })}
             >
-              <Icon as={link.icon} />
-              {!collapsed && <Text fontSize="sm">{link.label}</Text>}
-            </ChakraLink>
+              {({ isActive }) => (
+                <Flex
+                  align="center"
+                  gap={collapsed ? 0 : 3}
+                  px={3}
+                  py={2}
+                  borderRadius="md"
+                  justify={collapsed ? "center" : "flex-start"}
+                  bg={isActive ? "teal.200" : "transparent"}
+                  fontWeight={isActive ? "bold" : "normal"}
+                  _hover={{ bg: "teal.100" }}
+                >
+                  <Icon as={link.icon} />
+                  {!collapsed && <Text fontSize="sm">{link.label}</Text>}
+                </Flex>
+              )}
+            </NavLink>
           </Tooltip>
         ))}
       </VStack>
