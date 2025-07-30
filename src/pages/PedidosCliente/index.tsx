@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { Select, Table, RowActions } from "../../components";
-import { FaSearch, FaChevronDown } from "react-icons/fa";
+import { FaSearch, FaChevronDown, FaSlidersH } from "react-icons/fa";
 import { LuSearch } from "react-icons/lu";
 
 type Column<T> = {
@@ -89,7 +89,7 @@ const OrdersAdminPage = () => {
   return (
     <Stack p={4} gap={6}>
       {/* Exportar */}
-      <Flex gap={4} align="center">
+      {/* <Flex gap={4} align="center">
         <Select
           label="Mes"
           options={monthOptions}
@@ -104,13 +104,8 @@ const OrdersAdminPage = () => {
           onChange={setYear}
           multiple={false}
         />
-        <Button colorScheme="green">Exportar</Button>
-      </Flex>
-
-      {/* Filtros */}
-      <Box bg="teal.100" p={2} rounded="md" fontWeight="bold">
-        Filtros
-      </Box>
+        <Button colorPalette={"teal"}>Exportar</Button>
+      </Flex> */}
 
       {/* Encabezado y acciones */}
       <Flex justify="space-between" align="center">
@@ -118,7 +113,10 @@ const OrdersAdminPage = () => {
           Todos los pedidos
         </Text>
         <HStack gap={4}>
-          <Menu.Root>
+          <Button size="sm" colorPalette={"teal"}>
+            <FaSlidersH /> Filtros
+          </Button>
+          {/* <Menu.Root>
             <Menu.Trigger asChild>
               <Button size="sm">
                 <FaChevronDown /> Acciones masivas
@@ -135,10 +133,10 @@ const OrdersAdminPage = () => {
           </Menu.Root>
           <Button size="sm" colorScheme="blue">
             Nuevo pedido
-          </Button>
+          </Button> */}
           <HStack>
             <Input placeholder="Buscar..." size="sm" />
-            <IconButton aria-label="Search database">
+            <IconButton aria-label="Search database" colorPalette={"teal"}>
               <LuSearch />
             </IconButton>
           </HStack>

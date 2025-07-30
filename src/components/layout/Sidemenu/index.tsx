@@ -24,15 +24,15 @@ import { NavLink } from "react-router-dom";
 import { Tooltip } from "../../ui/tooltip";
 
 const links = [
-  { label: "Nuevo pedido", icon: FaPlus, to: "/admin/new-order" },
+  //{ label: "Nuevo pedido", icon: FaPlus, to: "/admin/new-order" },
   { label: "Mis pedidos", icon: FaClipboardList, to: "/pedidos" },
-  { label: "Cuenta corriente", icon: FaFileInvoice, to: "/admin/account" },
-  { label: "Mis datos", icon: FaUser, to: "/admin/profile" },
+  { label: "Cuenta corriente", icon: FaFileInvoice, to: "/cuenta-corriente" },
+  { label: "Mis datos", icon: FaUser, to: "/mis-datos" },
   { label: "Notificaciones", icon: FaBell, to: "/admin/notifications" },
-  { label: "Comprobantes", icon: FaFileInvoice, to: "/admin/invoices" },
+  { label: "Comprobantes", icon: FaFileInvoice, to: "/comprobantes" },
   { label: "Ir a la tienda", icon: FaStore, to: "http://localhost:5173/" },
-  { label: "Mis presupuestos", icon: FaClipboardList, to: "/admin/quotes" },
-  { label: "Reclamos", icon: FaCommentDots, to: "/admin/claims" },
+  { label: "Mis presupuestos", icon: FaClipboardList, to: "/presupuestos" },
+  //{ label: "Reclamos", icon: FaCommentDots, to: "/admin/claims" },
   { label: "Salir", icon: FaSignOutAlt, to: "/logout" },
 ];
 
@@ -47,14 +47,6 @@ const Sidebar = () => {
       p={3}
       transition="width 0.3s ease"
     >
-      {/* <IconButton
-        aria-label="Toggle Sidebar"
-        icon={collapsed ? <FaBars /> : <FaAngleLeft />}
-        size="sm"
-        mb={4}
-        onClick={() => setCollapsed(!collapsed)}
-        variant="ghost"
-      /> */}
       <IconButton
         variant="ghost"
         size="sm"
