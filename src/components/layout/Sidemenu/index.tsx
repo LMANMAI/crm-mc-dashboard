@@ -30,7 +30,7 @@ const links = [
   { label: "Mis datos", icon: FaUser, to: "/admin/profile" },
   { label: "Notificaciones", icon: FaBell, to: "/admin/notifications" },
   { label: "Comprobantes", icon: FaFileInvoice, to: "/admin/invoices" },
-  { label: "Ir a la tienda", icon: FaStore, to: "/shop" },
+  { label: "Ir a la tienda", icon: FaStore, to: "http://localhost:5173/" },
   { label: "Mis presupuestos", icon: FaClipboardList, to: "/admin/quotes" },
   { label: "Reclamos", icon: FaCommentDots, to: "/admin/claims" },
   { label: "Salir", icon: FaSignOutAlt, to: "/logout" },
