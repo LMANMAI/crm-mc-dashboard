@@ -6,6 +6,7 @@ import {
   CuentaCorrienteCliente,
   ComprobantesPageCliente,
   PresupuestosPageCliente,
+  ClienteScreen,
 } from "../pages";
 import AdminLayout from "../components/layout/AdminLayout";
 
@@ -17,7 +18,7 @@ const AppRouter = () => (
         <Route path="/pedidos" element={<PedidosClientePage />} />
         <Route path="/cuenta-corriente" element={<CuentaCorrienteCliente />} />
         //
-        <Route path="/mis-datos" element={<PedidosClientePage />} />
+        <Route path="/mis-datos" element={<ClienteScreen />} />
         <Route path="/presupuestos" element={<PresupuestosPageCliente />} />
         <Route path="/comprobantes" element={<ComprobantesPageCliente />} />
       </Route>
