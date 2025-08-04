@@ -61,7 +61,7 @@ const Sidebar = () => {
           <Tooltip key={link.label} content={link.label}>
             <NavLink
               to={link.to}
-              style={({ isActive }) => ({
+              style={() => ({
                 textDecoration: "none",
               })}
             >
@@ -73,12 +73,16 @@ const Sidebar = () => {
                   py={2}
                   borderRadius="md"
                   justify={collapsed ? "center" : "flex-start"}
-                  bg={isActive ? "teal.200" : "transparent"}
+                  bg={isActive ? "teal.500" : "transparent"}
                   fontWeight={isActive ? "bold" : "normal"}
-                  _hover={{ bg: "teal.100" }}
+                  _hover={{ bg: isActive ? "teal.700" : "teal.100" }}
                 >
-                  <Icon as={link.icon} />
-                  {!collapsed && <Text fontSize="sm">{link.label}</Text>}
+                  <Icon as={link.icon} color={!isActive ? "teal" : "white"} />
+                  {!collapsed && (
+                    <Text fontSize="sm" color={!isActive ? "teal" : "white"}>
+                      {link.label}
+                    </Text>
+                  )}
                 </Flex>
               )}
             </NavLink>
