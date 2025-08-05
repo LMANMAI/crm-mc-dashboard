@@ -7,3 +7,5 @@ export { default as ComprobantesPageCliente } from "./ComprobantesCliente";
 export { default as CuentaCorrienteCliente } from "./CuentaCorrienteCliente";
 export { default as PresupuestosPageCliente } from "./PresupuestosCliente";
 export { default as ClienteScreen } from "./Cliente";
+
+export { default as DetailPage } from "./DetailOrderCliente";

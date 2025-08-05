@@ -1,21 +1,11 @@
 import { useState } from "react";
+import { Box, VStack, Icon, Text, IconButton, Flex } from "@chakra-ui/react";
 import {
-  Box,
-  VStack,
-  Icon,
-  Text,
-  Link as ChakraLink,
-  IconButton,
-  Flex,
-} from "@chakra-ui/react";
-import {
-  FaPlus,
   FaClipboardList,
   FaUser,
   FaBell,
   FaFileInvoice,
   FaStore,
-  FaCommentDots,
   FaSignOutAlt,
   FaBars,
   FaAngleLeft,

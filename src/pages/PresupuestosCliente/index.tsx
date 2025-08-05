@@ -12,10 +12,20 @@ import { FaSearch, FaClipboardList, FaChevronDown } from "react-icons/fa";
 import { TitleWithIcon, SectionBox } from "../../components";
 import { Table } from "../../components";
 import { Menu as CMenu, Portal } from "@chakra-ui/react";
+import { NavLink } from "react-router-dom";
 
 const mockData = [
   {
-    numero: "5687",
+    numero: (
+      <NavLink
+        to={`/presupuestos/${5687}`}
+        style={() => ({
+          textDecoration: "none",
+        })}
+      >
+        5687
+      </NavLink>
+    ),
     fecha: "29/07/2025",
     producto: "Talonarios por duplicado",
     estado: <Tag.Root colorPalette="green">Aprobado</Tag.Root>,
@@ -26,6 +36,7 @@ const mockData = [
           //icon={<FaClipboardList />}
           size="sm"
           colorPalette="teal"
+          variant={"ghost"}
         >
           <FaClipboardList />
         </IconButton>
@@ -34,6 +45,7 @@ const mockData = [
             <Button
               size="sm" //rightIcon={<FaClipboardList />}
               colorPalette="teal"
+              variant={"ghost"}
             >
               Acciones
               <FaChevronDown />
@@ -75,7 +87,10 @@ export const PresupuestosPageCliente: React.FC = () => {
 
   return (
     <Box p={6}>
-      <TitleWithIcon icon={FaClipboardList} title="Módulo de presupuestos" />
+      <TitleWithIcon
+        icon={<FaClipboardList />}
+        title="Módulo de presupuestos"
+      />
 
       <SectionBox title="Todos los presupuestos">
         <Stack gap={4}>
