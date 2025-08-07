@@ -22,12 +22,14 @@ import {
   FaIndent,
 } from "react-icons/fa";
 import { Tooltip } from "../ui/tooltip";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   rowId: number;
 };
 
 const RowActions = ({ rowId }: Props) => {
+  const navigate = useNavigate();
   return (
     <HStack gap={2} justify="center">
       <Tooltip key={rowId} content="Previsualizar">
@@ -51,7 +53,14 @@ const RowActions = ({ rowId }: Props) => {
         <Portal>
           <MenuPositioner>
             <MenuContent>
-              <MenuItem value="preview">Previsualizar</MenuItem>
+              <MenuItem
+                value="preview"
+                onClick={() => {
+                  navigate(`/pedidos/${5687}`);
+                }}
+              >
+                Previsualizar
+              </MenuItem>
               <MenuItem value="print">Imprimir</MenuItem>
               <MenuItem value="reprint">Reimprimir</MenuItem>
               <MenuItem value="delete-order">Eliminar orden</MenuItem>

@@ -18,12 +18,12 @@ const links = [
   { label: "Mis pedidos", icon: FaClipboardList, to: "/pedidos" },
   { label: "Cuenta corriente", icon: FaFileInvoice, to: "/cuenta-corriente" },
   { label: "Mis datos", icon: FaUser, to: "/mis-datos" },
-  { label: "Notificaciones", icon: FaBell, to: "/admin/notifications" },
+  //{ label: "Notificaciones", icon: FaBell, to: "/admin/notifications" },
   { label: "Comprobantes", icon: FaFileInvoice, to: "/comprobantes" },
   { label: "Ir a la tienda", icon: FaStore, to: "http://localhost:5173/" },
   { label: "Mis presupuestos", icon: FaClipboardList, to: "/presupuestos" },
   //{ label: "Reclamos", icon: FaCommentDots, to: "/admin/claims" },
-  { label: "Salir", icon: FaSignOutAlt, to: "/logout" },
+  { label: "Salir", icon: FaSignOutAlt, to: "/auth" },
 ];
 
 const Sidebar = () => {

@@ -10,11 +10,14 @@ import {
   Tag,
   Menu,
   Portal,
+  Drawer,
+  CloseButton,
 } from "@chakra-ui/react";
 import React from "react";
 import { Select, Table, RowActions } from "../../components";
 import { FaSearch, FaChevronDown, FaSlidersH } from "react-icons/fa";
 import { LuSearch } from "react-icons/lu";
+import { NavLink } from "react-router-dom";
 
 type Column<T> = {
   header: string;
@@ -26,7 +29,16 @@ type Column<T> = {
 const data = [
   {
     id: 1,
-    nro: "#85093",
+    nro: (
+      <NavLink
+        to={`/pedidos/${5687}`}
+        style={() => ({
+          textDecoration: "none",
+        })}
+      >
+        5687
+      </NavLink>
+    ),
     fecha: "26/07/2025",
     cliente: "MarBet Gráfica Integral",
     titulo: "Bajada Laser B&N",
@@ -43,7 +55,16 @@ const data = [
   },
   {
     id: 2,
-    nro: "#85092",
+    nro: (
+      <NavLink
+        to={`/pedidos/${5687}`}
+        style={() => ({
+          textDecoration: "none",
+        })}
+      >
+        5687
+      </NavLink>
+    ),
     fecha: "25/07/2025",
     cliente: "RomaGraf",
     titulo: "Bajada Laser Color",
@@ -85,27 +106,11 @@ const yearOptions = [
 const OrdersAdminPage = () => {
   const [month, setMonth] = React.useState("Julio");
   const [year, setYear] = React.useState("2025");
+  const [open, setOpen] = React.useState(false);
 
   return (
     <Stack p={4} gap={6}>
       {/* Exportar */}
-      {/* <Flex gap={4} align="center">
-        <Select
-          label="Mes"
-          options={monthOptions}
-          value={month}
-          onChange={setMonth}
-          multiple={false}
-        />
-        <Select
-          label="Año"
-          options={yearOptions}
-          value={year}
-          onChange={setYear}
-          multiple={false}
-        />
-        <Button colorPalette={"teal"}>Exportar</Button>
-      </Flex> */}
 
       {/* Encabezado y acciones */}
       <Flex justify="space-between" align="center">
@@ -113,9 +118,59 @@ const OrdersAdminPage = () => {
           Todos los pedidos
         </Text>
         <HStack gap={4}>
-          <Button size="sm" colorPalette={"teal"}>
-            <FaSlidersH /> Filtros
-          </Button>
+          <Drawer.Root open={open} onOpenChange={(e) => setOpen(e.open)}>
+            <Drawer.Trigger asChild>
+              {/* <Button variant="outline" size="sm">
+                Open Drawer
+              </Button> */}
+              <Button size="sm" colorPalette={"teal"}>
+                <FaSlidersH /> Filtros
+              </Button>
+            </Drawer.Trigger>
+            <Portal>
+              <Drawer.Backdrop />
+              <Drawer.Positioner>
+                <Drawer.Content>
+                  <Drawer.Header>
+                    <Drawer.Title>Filtros</Drawer.Title>
+                  </Drawer.Header>
+                  <Drawer.Body>
+                    <Flex gap={4} align="center" direction={"column"}>
+                      <Select
+                        label="Mes"
+                        options={monthOptions}
+                        value={month}
+                        onChange={setMonth}
+                        multiple={false}
+                      />
+                      <Select
+                        label="Año"
+                        options={yearOptions}
+                        value={year}
+                        onChange={setYear}
+                        multiple={false}
+                      />
+                      <Button colorPalette={"teal"}>Exportar</Button>
+                    </Flex>
+                  </Drawer.Body>
+                  <Drawer.Footer>
+                    <Button colorPalette={"teal"}>Buscar</Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setOpen(false);
+                      }}
+                    >
+                      Cerrar
+                    </Button>
+                  </Drawer.Footer>
+                  <Drawer.CloseTrigger asChild>
+                    <CloseButton size="sm" />
+                  </Drawer.CloseTrigger>
+                </Drawer.Content>
+              </Drawer.Positioner>
+            </Portal>
+          </Drawer.Root>
           {/* <Menu.Root>
             <Menu.Trigger asChild>
               <Button size="sm">
