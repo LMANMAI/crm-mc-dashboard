@@ -7,15 +7,74 @@ import {
   Link,
   Stack,
   Image,
-  Field,
   InputGroup,
 } from "@chakra-ui/react";
 import { FaUser, FaLock } from "react-icons/fa";
 import logo from "../../assets/logo_prueba.png";
 import { useNavigate } from "react-router-dom";
+import { Select } from "../../components";
+import { login } from "../../features/auth";
+import { useDispatch } from "react-redux";
+import type { Rol } from "../../types";
 
 const AuthPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [selectedRol, setSelectedRol] = React.useState<Rol | "">("");
+
+  const [loading, setLoading] = React.useState<boolean>(false);
+
+  const userData = {
+    user_cliente: {
+      nombre: "Carlos",
+      apellido: "García",
+      dni: "22333444",
+      email: "carlos@cliente.com",
+    },
+    user_admin: {
+      nombre: "Lucía",
+      apellido: "Martínez",
+      dni: "33222444",
+      email: "lucia@admin.com",
+    },
+    user_empleado: {
+      nombre: "Pablo",
+      apellido: "Lopez",
+      dni: "34567890",
+      email: "pablo@empleado.com",
+    },
+  };
+
+  const handleChangeRol = (value: string) => {
+    if (
+      value === "user_admin" ||
+      value === "user_cliente" ||
+      value === "user_empleado"
+    ) {
+      setSelectedRol(value);
+    } else {
+      setSelectedRol("");
+    }
+  };
+
+  const handleUserAuthenticated = async () => {
+    if (!selectedRol || !(selectedRol in userData)) return;
+
+    dispatch(
+      login({
+        ...userData[selectedRol],
+        rol: selectedRol,
+        token: "",
+        id: "",
+      })
+    );
+
+    setLoading(true);
+    setTimeout(() => {
+      navigate(`/`);
+    }, 1500);
+  };
+
   return (
     <Center minH="100vh" bg="gray.50" px={4}>
       <Box
@@ -40,34 +99,43 @@ const AuthPage = () => {
             <Input placeholder="Usuario o correo electronico" />
           </InputGroup>
 
-          {/* Contraseña */}
-          {/* <Field.Root invalid>
-            <Field.Label>Contraseña</Field.Label>
-            <Input placeholder="Ingresa tu contraseña" />
-            {/* <Field.ErrorText>This field is required</Field.ErrorText> 
-          </Field.Root> */}
-
           <InputGroup startElement={<FaLock />}>
             <Input placeholder="Contraseña" />
           </InputGroup>
 
-          {/* Botones */}
+          <Select
+            label="Seleccion de perfil"
+            options={[
+              { label: "Cliente", value: "user_cliente" },
+              { label: "Administrador", value: "user_admin" },
+              { label: "Empleado", value: "user_empleado" },
+            ]}
+            value={selectedRol}
+            onChange={handleChangeRol}
+            multiple={false}
+          />
           <Stack direction="row" gap={4} pt={2}>
-            <Button flex={1} variant="outline" colorPalette="teal">
+            <Button
+              flex={1}
+              variant="outline"
+              colorPalette="teal"
+              disabled={loading}
+            >
               Registrarme
             </Button>
             <Button
               flex={1}
               colorPalette="teal"
               onClick={() => {
-                navigate(`/`);
+                handleUserAuthenticated();
               }}
+              disabled={loading}
+              loading={loading}
             >
               Iniciar Sesión
             </Button>
           </Stack>
 
-          {/* Olvidaste contraseña */}
           <Center>
             <Link color="teal.500" href="#">
               ¿Olvidaste tu contraseña?

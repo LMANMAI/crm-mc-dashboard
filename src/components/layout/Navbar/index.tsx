@@ -9,11 +9,14 @@ import {
   Portal,
   MenuPositioner,
   MenuContent,
-  MenuItem,
 } from "@chakra-ui/react";
 import { FaUser, FaShoppingCart, FaBell } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../../store";
 
 const Navbar = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
+
   return (
     <Box bg="#00b2a9" color="white" py={3} px={6}>
       <Flex align="center">
@@ -35,7 +38,7 @@ const Navbar = () => {
 
           <Flex align="center" gap={1}>
             <Icon as={FaUser} />
-            <Text fontSize="sm">GoldEyes</Text>
+            <Text fontSize="sm">{user?.nombre}</Text>
           </Flex>
           <Flex align="center" gap={1}>
             <Icon as={FaShoppingCart} />

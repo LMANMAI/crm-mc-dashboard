@@ -19,11 +19,17 @@ export interface UseFetchReturn<T> {
 }
 
 // Tipo de dato para el usuario autenticado
+export type Rol = "user_admin" | "user_cliente" | "user_empleado";
+
 export interface AuthUser {
+  nombre: string;
   id: string;
-  name: string;
-  email: string;
   token: string;
+  apellido: string;
+  dni: string;
+  rol: Rol;
+  email: string;
+  [key: string]: any; //permitir propiedades adicionales
 }
 
 export interface AuthState {

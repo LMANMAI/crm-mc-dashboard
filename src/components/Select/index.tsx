@@ -38,6 +38,7 @@ const CustomSelect = ({
         multiple={false}
       >
         <Select.HiddenSelect />
+        <Select.Label> {label} </Select.Label>
         <Select.Control>
           <Select.Trigger>
             <Select.ValueText placeholder={placeholder} />

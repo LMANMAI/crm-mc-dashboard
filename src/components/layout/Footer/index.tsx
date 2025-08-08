@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <Box bg={bg} py={4} textAlign="center">
       <Text fontSize="sm" color={"white"}>
-        DattaGraf es un producto de <strong>Dattar</strong>.
+        MasCopies es un producto de <strong>M&C IT Solutions</strong>.
       </Text>
     </Box>
   );

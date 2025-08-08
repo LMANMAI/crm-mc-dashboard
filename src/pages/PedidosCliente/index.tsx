@@ -8,14 +8,13 @@ import {
   IconButton,
   Input,
   Tag,
-  Menu,
   Portal,
   Drawer,
   CloseButton,
 } from "@chakra-ui/react";
 import React from "react";
 import { Select, Table, RowActions } from "../../components";
-import { FaSearch, FaChevronDown, FaSlidersH } from "react-icons/fa";
+import { FaSlidersH } from "react-icons/fa";
 import { LuSearch } from "react-icons/lu";
 import { NavLink } from "react-router-dom";
 

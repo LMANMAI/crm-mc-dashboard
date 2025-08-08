@@ -1,6 +1,4 @@
 import {
-  IconButton,
-  Menu,
   Portal,
   MenuRoot,
   MenuTrigger,
@@ -8,19 +6,9 @@ import {
   MenuContent,
   MenuItem,
   HStack,
-  Checkbox,
   Button,
 } from "@chakra-ui/react";
-import {
-  FaAngleDown,
-  FaTrash,
-  FaEye,
-  FaPrint,
-  FaFileAlt,
-  FaExclamation,
-  FaCheckSquare,
-  FaIndent,
-} from "react-icons/fa";
+import { FaAngleDown, FaCheckSquare, FaIndent } from "react-icons/fa";
 import { Tooltip } from "../ui/tooltip";
 import { useNavigate } from "react-router-dom";
 
