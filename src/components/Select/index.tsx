@@ -14,6 +14,7 @@ interface CustomSelectProps {
   multiple?: false;
   placeholder?: string;
   name?: string;
+  disabled?: boolean;
 }
 
 const CustomSelect = ({
@@ -23,6 +24,7 @@ const CustomSelect = ({
   onChange,
   placeholder = "Seleccioná una opción",
   name,
+  disabled = false,
 }: CustomSelectProps) => {
   const collection = createListCollection({
     items: options.map((opt) => ({ label: opt.label, value: opt.value })),
@@ -36,6 +38,7 @@ const CustomSelect = ({
         onValueChange={({ value }) => onChange(value[0])}
         collection={collection}
         multiple={false}
+        disabled={disabled}
       >
         <Select.HiddenSelect />
         <Select.Label> {label} </Select.Label>

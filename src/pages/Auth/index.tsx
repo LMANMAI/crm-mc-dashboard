@@ -96,11 +96,14 @@ const AuthPage = () => {
           </Center>
 
           <InputGroup startElement={<FaUser />}>
-            <Input placeholder="Usuario o correo electronico" />
+            <Input
+              placeholder="Usuario o correo electronico"
+              disabled={loading}
+            />
           </InputGroup>
 
           <InputGroup startElement={<FaLock />}>
-            <Input placeholder="Contraseña" />
+            <Input placeholder="Contraseña" disabled={loading} />
           </InputGroup>
 
           <Select
@@ -113,6 +116,7 @@ const AuthPage = () => {
             value={selectedRol}
             onChange={handleChangeRol}
             multiple={false}
+            disabled={loading}
           />
           <Stack direction="row" gap={4} pt={2}>
             <Button
