@@ -13,7 +13,7 @@ interface CustomTableProps<T> {
   rowKey: keyof T;
   onRowClick?: (row: T) => void;
   size?: "sm" | "md" | "lg";
-  variant?: string;
+  variant?: "outline" | "line";
 }
 
 function CustomTable<T extends Record<string, any>>({
@@ -22,14 +22,14 @@ function CustomTable<T extends Record<string, any>>({
   rowKey,
   onRowClick,
   size = "sm",
-  variant = "simple",
+  variant = "outline",
 }: CustomTableProps<T>) {
   return (
-    <Table.Root size="sm">
+    <Table.Root size={size} variant={variant}>
       <Table.Header>
         {columns.map((col) => (
           <Table.ColumnHeader
-            key={String(col.accessor)}
+            key={String(col.accessor || col.header)}
             textAlign={col.textAlign}
             fontWeight="bold"
             fontSize="sm"
@@ -40,30 +40,45 @@ function CustomTable<T extends Record<string, any>>({
           </Table.ColumnHeader>
         ))}
       </Table.Header>
-      <Table.Body>
-        {data.map((row) => (
-          <Table.Row
-            key={String(row[rowKey])}
-            cursor={onRowClick ? "pointer" : undefined}
-            _hover={onRowClick ? { bg: "gray.50" } : undefined}
-            onClick={() => onRowClick?.(row)}
-          >
-            {columns.map((col) => {
-              if (!col.accessor) return null;
 
-              const cell = row[col.accessor];
-              return (
-                <Table.Cell
-                  key={String(col.accessor)}
-                  textAlign={col.textAlign}
-                  py={3}
-                >
-                  {cell}
-                </Table.Cell>
-              );
-            })}
+      <Table.Body>
+        {data.length === 0 ? (
+          <Table.Row>
+            <Table.Cell
+              colSpan={columns.length}
+              textAlign="center"
+              py={6}
+              color="gray.500"
+              fontSize="sm"
+            >
+              No hay datos disponibles
+            </Table.Cell>
           </Table.Row>
-        ))}
+        ) : (
+          data.map((row) => (
+            <Table.Row
+              key={String(row[rowKey])}
+              cursor={onRowClick ? "pointer" : undefined}
+              _hover={onRowClick ? { bg: "gray.50" } : undefined}
+              onClick={() => onRowClick?.(row)}
+            >
+              {columns.map((col) => {
+                if (!col.accessor) return null;
+
+                const cell = row[col.accessor];
+                return (
+                  <Table.Cell
+                    key={String(col.accessor)}
+                    textAlign={col.textAlign}
+                    py={3}
+                  >
+                    {cell}
+                  </Table.Cell>
+                );
+              })}
+            </Table.Row>
+          ))
+        )}
       </Table.Body>
     </Table.Root>
   );
