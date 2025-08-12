@@ -85,9 +85,8 @@ const menuByRole: Record<string, any[]> = {
       items: [
         { label: "Crear pedido", icon: FaShoppingCart, to: "/crear-pedido" },
         { label: "Cotizador digital", icon: FaShoppingCart, to: "/cotizador" },
-        { label: "Pedidos", icon: FaClipboardList, to: "/pedidos" },
+        { label: "Pedidos", icon: FaClipboardList, to: "/pedidos-admin" },
         { label: "Proyectos", icon: FaBox, to: "/proyectos" },
-        { label: "Fleteros", icon: FaBox, to: "/fleteros" },
       ],
     },
     {
