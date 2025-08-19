@@ -18,6 +18,8 @@ import {
   ProyectosAdminPage,
   ReportesAdminPage,
   StockAdminPage,
+  NuevoPedidoAdminPage,
+  HistorialAdminPage,
 } from "../pages";
 import AdminLayout from "../components/layout/AdminLayout";
 import RoleRoute from "./RoleRoute";
@@ -46,6 +48,8 @@ const AppRouter = () => (
         <Route element={<RoleRoute allow={["user_admin"]} />}>
           <Route path="/" element={<CrearPedidoAdminPage />} />
           <Route path="/crear-pedido" element={<CrearPedidoAdminPage />} />
+          <Route path="/historial-admin" element={<HistorialAdminPage />} />
+          <Route path="/nuevo-pedido" element={<NuevoPedidoAdminPage />} />
           <Route path="/cotizador" element={<CotizadorAdminPage />} />
           <Route path="/pedidos-admin" element={<PedidosAdminPage />} />
           <Route path="/proyectos" element={<ProyectosAdminPage />} />

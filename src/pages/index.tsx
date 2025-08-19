@@ -21,3 +21,5 @@ export { default as PedidosAdminPage } from "./PedidosAdmin";
 export { default as ProyectosAdminPage } from "./ProyectosAdmin";
 export { default as ReportesAdminPage } from "./ReportesAdmin";
 export { default as StockAdminPage } from "./StockAdmin";
+export { default as NuevoPedidoAdminPage } from "./NuevoPedidoAdmin";
+export { default as HistorialAdminPage } from "./HistorialAdmin";

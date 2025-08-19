@@ -61,6 +61,7 @@ const menuByRole: Record<string, any[]> = {
       section: "OPERATIVO",
       items: [
         { label: "Crear pedido", icon: FaShoppingCart, to: "/crear-pedido" },
+
         { label: "Cotizador digital", icon: FaShoppingCart, to: "/cotizador" },
         { label: "Pedidos", icon: FaClipboardList, to: "/pedidos" },
         { label: "Proyectos", icon: FaBox, to: "/proyectos" },
@@ -87,6 +88,8 @@ const menuByRole: Record<string, any[]> = {
         { label: "Cotizador digital", icon: FaShoppingCart, to: "/cotizador" },
         { label: "Pedidos", icon: FaClipboardList, to: "/pedidos-admin" },
         { label: "Proyectos", icon: FaBox, to: "/proyectos" },
+        { label: "Nuevo pedido", icon: FaShoppingCart, to: "/nuevo-pedido" },
+        { label: "historial", icon: FaShoppingCart, to: "/historial-admin" },
       ],
     },
     {
