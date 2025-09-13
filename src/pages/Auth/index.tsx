@@ -10,7 +10,7 @@ import {
   InputGroup,
 } from "@chakra-ui/react";
 import { FaUser, FaLock } from "react-icons/fa";
-import logo from "../../assets/logo_prueba.png";
+// import logo from "../../assets/logo_prueba.png";
 import { useNavigate } from "react-router-dom";
 import { Select } from "../../components";
 import { login } from "../../features/auth";
@@ -85,7 +85,7 @@ const AuthPage = () => {
         w={{ base: "100%", sm: "400px" }}
       >
         <Center mb={6}>
-          <Image src={logo} alt="mascopies" objectFit="cover" />
+          {/* <Image src={logo} alt="mascopies" objectFit="cover" /> */}
         </Center>
 
         <Stack gap={4}>
