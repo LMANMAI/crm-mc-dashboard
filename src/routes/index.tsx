@@ -25,6 +25,14 @@ import {
   SectoresAdmin,
   CategoriasAdmin,
   InsumosAdmin,
+  TiposClienteAdminPage,
+  ConfigFacturasAdminPage,
+  ProveedoresAdminPage,
+  MediosPagoAdminPage,
+  UsuariosAdminPage,
+  NivelesUsuariosPage,
+  TiendaAdminPage,
+  ArchivosAdminPage,
 } from "../pages";
 import AdminLayout from "../components/layout/AdminLayout";
 import RoleRoute from "./RoleRoute";
@@ -71,12 +79,38 @@ const AppRouter = () => (
           <Route path="/sectores-admin" element={<SectoresAdmin />} />
           <Route path="/categorias-admin" element={<CategoriasAdmin />} />
           <Route path="/insumos-admin" element={<InsumosAdmin />} />
+
           {/* //Tablas administrativas */}
-          <Route path="/clientes" element={<ClientesAdminPage />} />
+          <Route path="/clientes-admin" element={<ClientesAdminPage />} />
           <Route
-            path="/configuraciones"
+            path="/tipos-cliente-admin"
+            element={<TiposClienteAdminPage />}
+          />
+          <Route
+            path="/config-facturas-admin"
+            element={<ConfigFacturasAdminPage />}
+          />
+          <Route path="/proveedores-admin" element={<ProveedoresAdminPage />} />
+          <Route path="/medios-pago-admin" element={<MediosPagoAdminPage />} />
+
+          {/* //Tablas generales */}
+          <Route path="/usuarios-admin" element={<UsuariosAdminPage />} />
+          <Route
+            path="/tipos-usuarios-admin"
+            element={<NivelesUsuariosPage />}
+          />
+          <Route path="/tienda-admin" element={<TiendaAdminPage />} />
+          <Route
+            path="/configuraciones-admin"
             element={<ConfiguracionesAdminPage />}
           />
+          <Route path="/archivos-admin" element={<ArchivosAdminPage />} />
+
+          {/* <Route path="/clientes" element={<ClientesAdminPage />} /> */}
+          {/* <Route
+            path="/configuraciones"
+            element={<ConfiguracionesAdminPage />}
+          /> */}
           <Route path="/reportes" element={<ReportesAdminPage />} />
         </Route>
       </Route>

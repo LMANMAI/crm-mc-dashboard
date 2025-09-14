@@ -12,9 +12,7 @@ export { default as DetailPage } from "./DetailOrderCliente";
 
 //admin
 export { default as CajasAdminPage } from "./CajasAdmin";
-export { default as ClientesAdminPage } from "./ClientesAdmin";
 export { default as ComprasAdminPage } from "./ComprasAdmin";
-export { default as ConfiguracionesAdminPage } from "./ConfiguracionesAdmin";
 export { default as CotizadorAdminPage } from "./CotizadorAdmin";
 export { default as CrearPedidoAdminPage } from "./CrearPedidoAdmin";
 export { default as PedidosAdminPage } from "./PedidosAdmin";
@@ -29,3 +27,17 @@ export { default as PedidosSimpleAdmin } from "./PedidosSimpleAdmin";
 export { default as SectoresAdmin } from "./SectoresAdmin";
 export { default as CategoriasAdmin } from "./CategoriasAdmin";
 export { default as InsumosAdmin } from "./InsumosAdmin";
+
+//tablas administrativas
+export { default as ClientesAdminPage } from "./ClientesAdmin";
+export { default as TiposClienteAdminPage } from "./TiposClienteAdmin";
+export { default as ConfigFacturasAdminPage } from "./ConfigFacturasAdmin";
+export { default as ProveedoresAdminPage } from "./ProveedoresAdmin";
+export { default as MediosPagoAdminPage } from "./MediosPagoAdmin";
+
+//tablas generales
+export { default as ConfiguracionesAdminPage } from "./ConfiguracionesAdmin";
+export { default as UsuariosAdminPage } from "./UsuariosAdmin";
+export { default as NivelesUsuariosPage } from "./NivelesUsuariosAdminPage";
+export { default as TiendaAdminPage } from "./TiendaAdmin";
+export { default as ArchivosAdminPage } from "./ArchivosAdminPage";
