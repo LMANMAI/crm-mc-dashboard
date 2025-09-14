@@ -20,6 +20,11 @@ import {
   StockAdminPage,
   NuevoPedidoAdminPage,
   HistorialAdminPage,
+  EstadosAdminPage,
+  PedidosSimpleAdmin,
+  SectoresAdmin,
+  CategoriasAdmin,
+  InsumosAdmin,
 } from "../pages";
 import AdminLayout from "../components/layout/AdminLayout";
 import RoleRoute from "./RoleRoute";
@@ -56,6 +61,17 @@ const AppRouter = () => (
           <Route path="/cajas" element={<CajasAdminPage />} />
           <Route path="/compras" element={<ComprasAdminPage />} />
           <Route path="/stock" element={<StockAdminPage />} />
+
+          {/* //Tablas operativas */}
+          <Route path="/estados-admin" element={<EstadosAdminPage />} />
+          <Route
+            path="/pedidos-simples-admin"
+            element={<PedidosSimpleAdmin />}
+          />
+          <Route path="/sectores-admin" element={<SectoresAdmin />} />
+          <Route path="/categorias-admin" element={<CategoriasAdmin />} />
+          <Route path="/insumos-admin" element={<InsumosAdmin />} />
+          {/* //Tablas administrativas */}
           <Route path="/clientes" element={<ClientesAdminPage />} />
           <Route
             path="/configuraciones"

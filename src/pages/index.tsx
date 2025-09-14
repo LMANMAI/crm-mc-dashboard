@@ -23,3 +23,9 @@ export { default as ReportesAdminPage } from "./ReportesAdmin";
 export { default as StockAdminPage } from "./StockAdmin";
 export { default as NuevoPedidoAdminPage } from "./NuevoPedidoAdmin";
 export { default as HistorialAdminPage } from "./HistorialAdmin";
+//tablas
+export { default as EstadosAdminPage } from "./EstadosAdmin";
+export { default as PedidosSimpleAdmin } from "./PedidosSimpleAdmin";
+export { default as SectoresAdmin } from "./SectoresAdmin";
+export { default as CategoriasAdmin } from "./CategoriasAdmin";
+export { default as InsumosAdmin } from "./InsumosAdmin";

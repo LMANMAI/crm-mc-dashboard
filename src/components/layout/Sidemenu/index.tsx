@@ -101,10 +101,45 @@ const menuByRole: Record<string, any[]> = {
       ],
     },
     {
-      section: "TABLAS",
+      section: "TABLAS OPERATIVAS",
       items: [
-        { label: "Clientes", icon: FaUsers, to: "/clientes" },
-        { label: "Configuraciones", icon: FaCog, to: "/configuraciones" },
+        { label: "Estados", icon: FaUsers, to: "/estados-admin" },
+        { label: "Pedidos simples", icon: FaCog, to: "/pedidos-simples-admin" },
+        { label: "Sectores", icon: FaUsers, to: "/sectores-admin" },
+        { label: "Categorias", icon: FaCog, to: "/categorias-admin" },
+        { label: "Insumos", icon: FaCog, to: "/insumos-admin" },
+      ],
+    },
+    {
+      section: "TABLAS ADMINISTRATIVAS",
+      items: [
+        { label: "Clientes", icon: FaUsers, to: "/clientes-admin" },
+        { label: "Tipos de clientes", icon: FaCog, to: "/tipos-cliente-admin" },
+        {
+          label: "Configuracion de facturas",
+          icon: FaUsers,
+          to: "/config-facturas-admin",
+        },
+        { label: "Proveedores", icon: FaCog, to: "/proveedores-admin" },
+        { label: "Medios de pago", icon: FaCog, to: "/medios-pago-admin" },
+      ],
+    },
+    {
+      section: "TABLAS GENERALES",
+      items: [
+        { label: "Usuarios", icon: FaUsers, to: "/usuarios-admin" },
+        {
+          label: "Niveles de usuario",
+          icon: FaCog,
+          to: "/tipos-usuarios-admin",
+        },
+        {
+          label: "Tienda",
+          icon: FaUsers,
+          to: "/tienda-admin",
+        },
+        { label: "Configuraciones", icon: FaCog, to: "/configuraciones-admin" },
+        { label: "Archivos", icon: FaCog, to: "/archivos-admin" },
       ],
     },
     {
