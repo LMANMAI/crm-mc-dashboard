@@ -89,7 +89,7 @@ const ArchivosAdminPage: React.FC = () => {
         Archivos
       </Heading>
 
-      <HStack justify="space-between" mb={4} gap={4}>
+      <HStack justify="start" mb={4} gap={4}>
         <InputGroup maxW="400px">
           {/* <InputElement
             placement="start"
@@ -106,26 +106,18 @@ const ArchivosAdminPage: React.FC = () => {
           />
         </InputGroup>
         <Button
-          colorPalette="red"
+          colorPalette="teal"
           onClick={handleBulkDelete}
-          disabled={!anySelected}
-        >
-          <Icon as={FiTrash2} style={{ marginRight: 6 }} />
-          Eliminar seleccionados
-        </Button>
-        <Button
-          colorPalette="red"
-          onClick={handleBulkDelete}
-          disabled={!anySelected}
+          //disabled={!anySelected}
         >
           <Icon as={FiSearch} style={{ marginRight: 6 }} />
-          Eliminar seleccionados
+          Buscar
         </Button>
       </HStack>
 
       <Card.Root>
         <Card.Header>
-          <Stack gap={1}>
+          <Stack gap={1} my={5}>
             <Text fontWeight="bold">
               Espacio utilizado: <Text as="span">12.56GB</Text>
             </Text>
@@ -135,6 +127,10 @@ const ArchivosAdminPage: React.FC = () => {
             <Text>
               Espacio libre: <Text as="span">2.44GB</Text>
             </Text>
+            <Button colorPalette="pink" onClick={handleBulkDelete} my={2}>
+              <Icon as={FiTrash2} style={{ marginRight: 6 }} />
+              Eliminar seleccionados
+            </Button>
           </Stack>
         </Card.Header>
 
