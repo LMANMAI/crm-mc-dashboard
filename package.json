@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "dev:mock": "concurrently \"vite\" \"json-server --watch db.json --port 3000\"",
-    "build": "tsc -b && vite build",
+    "build": "tsc -p tsconfig.prod.json && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
