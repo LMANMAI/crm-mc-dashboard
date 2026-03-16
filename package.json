@@ -7,6 +7,7 @@
     "dev": "vite",
     "dev:mock": "concurrently \"vite\" \"json-server --watch db.json --port 3000\"",
     "build": "tsc -p tsconfig.prod.json && vite build",
+    "generate:feature": "node scripts/generate-feature.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -20,7 +21,9 @@
     "react-dom": "^19.1.0",
     "react-icons": "^5.5.0",
     "react-redux": "^9.2.0",
-    "react-router-dom": "^7.7.1"
+    "react-router-dom": "^7.7.1",
+    "uuid": "^13.0.0",
+    "zustand": "^5.0.11"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",

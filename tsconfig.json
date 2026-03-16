@@ -5,11 +5,15 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "skipLibCheck": true,
+    "baseUrl": ".",
+    "composite": true,
+    "noEmit": true,
     "paths": {
-      "@/*": ["./src/*"]
-    }
-  }
+      "@mas-copies/core-contracts": ["packages/core-contracts/src/index.ts"],
+      "@mas-copies/core-contracts/*": ["packages/core-contracts/src/*"],
+      "@mas-copies/editor-copys": ["packages/features/editor-copys/src/index.ts"], // <--- AGREGAR ESTA
+      "@mas-copies/editor-copys/*": ["packages/features/editor-copys/src/*"]       // <--- Y ESTA
+}
+  },
+  "include": ["src", "apps", "packages"]
 }

@@ -6,15 +6,15 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
-
+    "emitDeclarationOnly": true,
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
-    "noEmit": true,
+    "noEmit": false,
     "jsx": "react-jsx",
-
+    "composite": true,
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
@@ -23,5 +23,19 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "baseUrl": ".",
+    "paths": {
+      "paths": {
+  "@mas-copies/core-contracts": ["./packages/core-contracts/src/index.ts"],
+  "@mas-copies/core-contracts/*": ["./packages/core-contracts/src/*"],
+  "@mas-copies/editor-copys": ["./packages/features/editor-copys/src/index.ts"],
+  "@mas-copies/editor-copys/*": ["./packages/features/editor-copys/src/*"]
+}
+    },
+ "include": [
+    "src", 
+    "packages/core-contracts/src", 
+    "packages/features/*/src",
+    "apps/*/src"
+  ],
 }
