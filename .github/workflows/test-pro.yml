@@ -2,10 +2,23 @@ name: Check-Universal
 on: [push, pull_request]
 
 jobs:
-  validar-codigo: # <--- Este es el nombre que GitHub va a detectar
+  validar-codigo: # NO cambies este ID, es el que reconoce tu Ruleset
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout del código
         uses: actions/checkout@v4
-      - name: Test de Humo
-        run: echo "El codigo esta OK, podes pasar."
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm' # Esto hace que los siguientes deploys sean más rápidos
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Ejecutar Linter
+        run: npm run lint # Esto va a buscar el comando en tu package.json
+
+      - name: Ejecutar Tests
+        run: npm test # O 'npm run test', según cómo lo tengas
