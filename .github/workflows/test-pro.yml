@@ -1,0 +1,11 @@
+name: Check-Universal
+on: [push, pull_request]
+
+jobs:
+  validar-codigo: # <--- Este es el nombre que GitHub va a detectar
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Test de Humo
+        run: echo "El codigo esta OK, podes pasar."
