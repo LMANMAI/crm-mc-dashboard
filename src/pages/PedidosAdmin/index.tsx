@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Box,
   Button,
@@ -13,19 +13,19 @@ import {
   Tooltip,
   Menu,
   Portal,
-} from "@chakra-ui/react";
-import { Select, Table } from "../../components";
-import { LuDownload, LuSearch, LuPlus } from "react-icons/lu";
+} from '@chakra-ui/react';
+import { Select, Table } from '../../components';
+import { LuDownload, LuSearch, LuPlus } from 'react-icons/lu';
 
 const monthOptions = [
-  { label: "Agosto", value: "08" },
-  { label: "Julio", value: "07" },
-  { label: "Junio", value: "06" },
+  { label: 'Agosto', value: '08' },
+  { label: 'Julio', value: '07' },
+  { label: 'Junio', value: '06' },
 ];
 
 const yearOptions = [
-  { label: "2025", value: "2025" },
-  { label: "2024", value: "2024" },
+  { label: '2025', value: '2025' },
+  { label: '2024', value: '2024' },
 ];
 
 const estados = {
@@ -49,55 +49,55 @@ const estados = {
 const rows = [
   {
     id: 1,
-    nro: "85041",
-    fecha: "19/08/2025",
-    cliente: "octavio felic",
-    titulo: "Sticker Troquelado",
-    producto: "Bajada Laser B&N",
-    color: "MyF",
-    medida: "21x29.7",
-    cant: "1.00",
-    precio: "$ 1.980,00",
+    nro: '85041',
+    fecha: '19/08/2025',
+    cliente: 'octavio felic',
+    titulo: 'Sticker Troquelado',
+    producto: 'Bajada Laser B&N',
+    color: 'MyF',
+    medida: '21x29.7',
+    cant: '1.00',
+    precio: '$ 1.980,00',
     estado: estados.paraEntregar,
-    medioPago: "-",
-    facturado: "$0",
+    medioPago: '-',
+    facturado: '$0',
   },
   {
     id: 2,
-    nro: "85039",
-    fecha: "19/08/2025",
-    cliente: "Morph (f)",
-    titulo: "Talonarios duplicado",
-    producto: "Bajada Laser Color",
-    color: "Full color frente",
-    medida: "29x40",
-    cant: "2.00",
-    precio: "$ 6.990,00",
+    nro: '85039',
+    fecha: '19/08/2025',
+    cliente: 'Morph (f)',
+    titulo: 'Talonarios duplicado',
+    producto: 'Bajada Laser Color',
+    color: 'Full color frente',
+    medida: '29x40',
+    cant: '2.00',
+    precio: '$ 6.990,00',
     estado: estados.terminaciones,
-    medioPago: "-",
-    facturado: "$0",
+    medioPago: '-',
+    facturado: '$0',
   },
 ];
 
 const columns = [
-  { header: "Sel.", accessor: "sel" },
-  { header: "Nro", accessor: "nro" },
-  { header: "Fecha", accessor: "fecha" },
-  { header: "Cliente", accessor: "cliente" },
-  { header: "Título", accessor: "titulo" },
-  { header: "Producto", accessor: "producto" },
-  { header: "Color", accessor: "color" },
-  { header: "Medida", accessor: "medida" },
-  { header: "Cant.", accessor: "cant", textAlign: "right" as const },
-  { header: "Precio", accessor: "precio", textAlign: "right" as const },
-  { header: "Estado", accessor: "estado", textAlign: "center" as const },
+  { header: 'Sel.', accessor: 'sel' },
+  { header: 'Nro', accessor: 'nro' },
+  { header: 'Fecha', accessor: 'fecha' },
+  { header: 'Cliente', accessor: 'cliente' },
+  { header: 'Título', accessor: 'titulo' },
+  { header: 'Producto', accessor: 'producto' },
+  { header: 'Color', accessor: 'color' },
+  { header: 'Medida', accessor: 'medida' },
+  { header: 'Cant.', accessor: 'cant', textAlign: 'right' as const },
+  { header: 'Precio', accessor: 'precio', textAlign: 'right' as const },
+  { header: 'Estado', accessor: 'estado', textAlign: 'center' as const },
   {
-    header: "Medio de pago",
-    accessor: "medioPago",
-    textAlign: "center" as const,
+    header: 'Medio de pago',
+    accessor: 'medioPago',
+    textAlign: 'center' as const,
   },
-  { header: "Facturado", accessor: "facturado", textAlign: "right" as const },
-  { header: "", accessor: "acciones", textAlign: "center" as const },
+  { header: 'Facturado', accessor: 'facturado', textAlign: 'right' as const },
+  { header: '', accessor: 'acciones', textAlign: 'center' as const },
 ];
 
 const SectionHeader = ({ children }: { children: React.ReactNode }) => (
@@ -121,15 +121,15 @@ const Card = ({ children }: { children: React.ReactNode }) => (
 );
 
 const PedidosAdminPage = () => {
-  const [month, setMonth] = React.useState("08");
-  const [year, setYear] = React.useState("2025");
-  const [search, setSearch] = React.useState("");
+  const [month, setMonth] = React.useState('08');
+  const [year, setYear] = React.useState('2025');
+  const [search, setSearch] = React.useState('');
 
   const tableData = rows.map((r) => ({
     ...r,
     sel: <input type="checkbox" />,
     acciones: (
-      <Menu.Root positioning={{ placement: "bottom-end" }}>
+      <Menu.Root positioning={{ placement: 'bottom-end' }}>
         <Menu.Trigger asChild>
           <Button size="xs" colorPalette="blue">
             Acciones
@@ -186,75 +186,75 @@ const PedidosAdminPage = () => {
       <Card>
         <SectionHeader>Filtros</SectionHeader>
         <Stack p={3} gap={3}>
-          <Grid templateColumns={{ base: "1fr", xl: "1fr 1fr 1fr" }} gap={3}>
+          <Grid templateColumns={{ base: '1fr', xl: '1fr 1fr 1fr' }} gap={3}>
             <Input placeholder="Número" size="sm" />
             <Select
               options={[
-                { label: "Seleccione un cliente", value: "" },
-                { label: "Morph (f)", value: "morph" },
-                { label: "Octavio Felic", value: "octavio" },
+                { label: 'Seleccione un cliente', value: '' },
+                { label: 'Morph (f)', value: 'morph' },
+                { label: 'Octavio Felic', value: 'octavio' },
               ]}
-              value={""}
+              value={''}
               onChange={() => {}}
               multiple={false}
             />
             <Select
               options={[
-                { label: "Seleccione una terminación", value: "" },
-                { label: "Anillado", value: "anillado" },
-                { label: "Laminado", value: "laminado" },
+                { label: 'Seleccione una terminación', value: '' },
+                { label: 'Anillado', value: 'anillado' },
+                { label: 'Laminado', value: 'laminado' },
               ]}
-              value={""}
+              value={''}
               onChange={() => {}}
               multiple={false}
             />
           </Grid>
 
-          <Grid templateColumns={{ base: "1fr", xl: "1fr 1fr 1fr" }} gap={3}>
+          <Grid templateColumns={{ base: '1fr', xl: '1fr 1fr 1fr' }} gap={3}>
             <Input placeholder="Estado" size="sm" />
             <Select
               options={[
-                { label: "Seleccione un producto", value: "" },
-                { label: "Bajada Laser B&N", value: "bn" },
-                { label: "Bajada Laser Color", value: "color" },
+                { label: 'Seleccione un producto', value: '' },
+                { label: 'Bajada Laser B&N', value: 'bn' },
+                { label: 'Bajada Laser Color', value: 'color' },
               ]}
-              value={""}
+              value={''}
               onChange={() => {}}
               multiple={false}
             />
             <Select
               options={[
-                { label: "Seleccione un sector", value: "" },
-                { label: "Impresión", value: "impresion" },
-                { label: "Terminaciones", value: "terminaciones" },
+                { label: 'Seleccione un sector', value: '' },
+                { label: 'Impresión', value: 'impresion' },
+                { label: 'Terminaciones', value: 'terminaciones' },
               ]}
-              value={""}
+              value={''}
               onChange={() => {}}
               multiple={false}
             />
           </Grid>
 
           <Grid
-            templateColumns={{ base: "1fr", xl: "1fr 1fr 1fr 1fr" }}
+            templateColumns={{ base: '1fr', xl: '1fr 1fr 1fr 1fr' }}
             gap={3}
           >
             <Select
               options={[
-                { label: "Filtrar por papel", value: "" },
-                { label: "Ilustración 170g", value: "il170" },
-                { label: "Obra 80g", value: "obra80" },
+                { label: 'Filtrar por papel', value: '' },
+                { label: 'Ilustración 170g', value: 'il170' },
+                { label: 'Obra 80g', value: 'obra80' },
               ]}
-              value={""}
+              value={''}
               onChange={() => {}}
               multiple={false}
             />
             <Select
               options={[
-                { label: "Seleccione un usuario", value: "" },
-                { label: "Carlos", value: "carlos" },
-                { label: "Lucía", value: "lucia" },
+                { label: 'Seleccione un usuario', value: '' },
+                { label: 'Carlos', value: 'carlos' },
+                { label: 'Lucía', value: 'lucia' },
               ]}
-              value={""}
+              value={''}
               onChange={() => {}}
               multiple={false}
             />
@@ -262,14 +262,14 @@ const PedidosAdminPage = () => {
             <Input type="date" size="sm" />
           </Grid>
 
-          <Grid templateColumns={{ base: "1fr", xl: "1fr 1fr 1fr" }} gap={3}>
+          <Grid templateColumns={{ base: '1fr', xl: '1fr 1fr 1fr' }} gap={3}>
             <Select
               options={[
-                { label: "Seleccione un color", value: "" },
-                { label: "B&N", value: "bn" },
-                { label: "Full Color", value: "cmky" },
+                { label: 'Seleccione un color', value: '' },
+                { label: 'B&N', value: 'bn' },
+                { label: 'Full Color', value: 'cmky' },
               ]}
-              value={""}
+              value={''}
               onChange={() => {}}
               multiple={false}
             />
@@ -326,7 +326,7 @@ const PedidosAdminPage = () => {
               placeholder="Buscar…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              w={{ base: "200px", md: "260px" }}
+              w={{ base: '200px', md: '260px' }}
             />
             {/* <Tooltip content="Buscar">
               <IconButton aria-label="Buscar" size="sm">
@@ -342,8 +342,8 @@ const PedidosAdminPage = () => {
         </Box>
 
         <Flex px={3} pb={3} gap={1}>
-          {["<<", "<", "1", "2", "3", ">", ">>"].map((p) => (
-            <Button key={p} size="xs" variant={p === "1" ? "solid" : "outline"}>
+          {['<<', '<', '1', '2', '3', '>', '>>'].map((p) => (
+            <Button key={p} size="xs" variant={p === '1' ? 'solid' : 'outline'}>
               {p}
             </Button>
           ))}
