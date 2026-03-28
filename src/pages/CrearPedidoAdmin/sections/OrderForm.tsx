@@ -71,6 +71,7 @@ const OrderForm: React.FC<OrderFormProps> = ({
             onChange={setProducto}
             multiple={false}
             placeholder="Seleccione un producto"
+            disabled={!cliente}
           />
         </Field.Root>
 
@@ -82,6 +83,7 @@ const OrderForm: React.FC<OrderFormProps> = ({
             onChange={setSubproducto}
             multiple={false}
             placeholder="Seleccione un subproducto"
+            disabled={!producto}
           />
         </Field.Root>
 
@@ -119,7 +121,11 @@ const OrderForm: React.FC<OrderFormProps> = ({
         </Field.Root>
 
         <HStack>
-          <Button colorScheme="teal" size="sm">
+          <Button
+            colorScheme="teal"
+            size="sm"
+            disabled={!cliente || !producto || !subproducto}
+          >
             CONTINUAR
           </Button>
         </HStack>

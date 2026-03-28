@@ -8,7 +8,10 @@ interface OrderPreviewProps {
   cantidad: number;
 }
 
-const OrderPreview: React.FC<OrderPreviewProps> = ({ producto, cantidad }) => {
+const OrderPreview: React.FC<OrderPreviewProps> = ({
+  producto,
+  cantidad,
+}) => {
   return (
     <Stack gap={6}>
       <ProductInfo producto={producto} />

@@ -27,8 +27,6 @@ const CrearPedidoAdminPage = () => {
       >
         <OrderPreview
           producto={selectedProduct?.label || ""}
-          image={selectedProduct?.image || ""}
-          description={selectedProduct?.description || ""}
           cantidad={cantidad}
         />
 
