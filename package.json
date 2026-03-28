@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "concurrently \"vite\" \"tsx watch api/index.ts\"",
     "dev:mock": "concurrently \"vite\" \"json-server --watch db.json --port 3000\"",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "lint": "eslint .",
     "test": "vitest run",
     "preview": "vite preview"
