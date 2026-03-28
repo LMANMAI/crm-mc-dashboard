@@ -1,0 +1,40 @@
+{
+  "clientes": [
+    { "label": "De Rentas", "value": "rentas" },
+    { "label": "MarBet Gráfica", "value": "marbet" },
+    { "label": "RomaGraf", "value": "romagraf" }
+  ],
+  "productos": [
+    {
+      "value": "anillados",
+      "label": "Anillados",
+      "image": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1200",
+      "description": "Este producto es para anillar copias que traes o para anillar copias que vas a hacer con nosotros. Debes elegir el anillado que más se acerque a la cantidad de hojas que vas a querer anillar (la cantidad de hojas que se anillan depende del gramaje del papel. La referencia indicada es estipulada para hoja A4 de 80g). Incluye tapa y contratapa plástica.",
+      "subproductos": [
+        { "label": "Plástico espiralado", "value": "espiralado" },
+        { "label": "Metálico (ringwire)", "value": "metalico" }
+      ]
+    },
+    {
+      "value": "bajada-bn",
+      "label": "Bajada Láser B&N",
+      "image": "https://images.unsplash.com/photo-1580048124632-6cab04489a4f?q=80&w=1200",
+      "description": "Impresiones en blanco y negro de alta calidad sobre papel obra de 80g. Ideal para documentos, apuntes y formularios.",
+      "subproductos": [
+        { "label": "Simple faz", "value": "simple" },
+        { "label": "Doble faz", "value": "doble" }
+      ]
+    },
+    {
+      "value": "bajada-color",
+      "label": "Bajada Láser Color",
+      "image": "https://images.unsplash.com/photo-1562654501-a0ccc0af3fb1?q=80&w=1200",
+      "description": "Impresiones a todo color con tecnología láser profesional. Colores vibrantes y nitidez superior para presentaciones y folletos.",
+      "subproductos": [
+        { "label": "Papel Obra 90g", "value": "obra-90" },
+        { "label": "Ilustración 150g", "value": "ilustracion-150" },
+        { "label": "Ilustración 300g", "value": "ilustracion-300" }
+      ]
+    }
+  ]
+}
