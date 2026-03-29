@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 package-lock.json
 
+db.json
+src/pages/admin/CrearPedidoAdmin/orderData.json
