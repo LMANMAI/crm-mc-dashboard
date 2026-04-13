@@ -1,43 +1,128 @@
 import React from "react";
-import {
-  Box,
-  Button,
-  Field,
-  Fieldset,
-  Grid,
-  Heading,
-  HStack,
-  Image,
-  Input,
-  Stack,
-  Text,
-  Textarea,
-} from "@chakra-ui/react";
-import { Select } from "../../../components";
+import { Box, Grid } from "@chakra-ui/react";
+import OrderPreview from "./sections/OrderPreview";
+import OrderForm from "./sections/OrderForm";
+import OrderSummary from "./sections/OrderSummary";
+import OrderSuccess from "./sections/OrderSuccess";
+import orderData from "./orderData.json";
+import useFetch from "../../../hooks/useFetch";
+import { ORDERS } from "../../../config/constants";
+
+const MEDIOS_PAGO_LABELS: Record<string, string> = {
+  efectivo: "Efectivo",
+  cheque: "Cheque",
+  mercadopago: "Mercado Pago",
+};
+
+interface CreatedOrder {
+  id: string | number;
+  [key: string]: unknown;
+}
 
 const CrearPedidoAdminPage = () => {
+  const [step, setStep] = React.useState<"form" | "summary" | "success">("form");
   const [cliente, setCliente] = React.useState("");
-  const [producto, setProducto] = React.useState("");
+  const [producto, setProducto] = React.useState("anillados");
   const [subproducto, setSubproducto] = React.useState("");
   const [cantidad, setCantidad] = React.useState<number>(11);
   const [observaciones, setObservaciones] = React.useState("");
-  const [archivo, setArchivo] = React.useState<File | null>(null);
+  const [, setArchivo] = React.useState<File | null>(null);
+  const [medioPago, setMedioPago] = React.useState("");
+  const [comentariosPago, setComentariosPago] = React.useState("");
+  const [createdOrderId, setCreatedOrderId] = React.useState<string | number>("");
 
-  const clientesOpts = [
-    { label: "De Rentas", value: "rentas" },
-    { label: "MarBet Gráfica", value: "marbet" },
-    { label: "RomaGraf", value: "romagraf" },
-  ];
-  const productosOpts = [
-    { label: "Anillados", value: "anillados" },
-    { label: "Bajada Láser B&N", value: "bajada-bn" },
-    { label: "Bajada Láser Color", value: "bajada-color" },
-  ];
-  const subproductosOpts = [
-    { label: "Selecciona un subproducto", value: "" },
-    { label: "Plástico espiralado", value: "espiralado" },
-    { label: "Metálico (ringwire)", value: "metalico" },
-  ];
+  const { isLoading: isSaving, makeRequest } = useFetch<CreatedOrder>(ORDERS.CREATE);
+
+  // Encontrar la info del producto seleccionado
+  const selectedProduct = orderData.productos.find((p) => p.value === producto);
+
+  // Subproductos del producto elegido
+  const subproductosOpts = selectedProduct?.subproductos || [];
+
+  // Precio unitario del subproducto seleccionado
+  const precioUnitario =
+    subproductosOpts.find((s) => s.value === subproducto)?.precio ?? 0;
+
+  // Labels para resumen y pantalla de éxito
+  const clienteData = (orderData.clientes?.items || []).find(
+    (c) => String(c.id) === cliente
+  );
+  const clienteLabel =
+    clienteData?.empresa?.trim() ||
+    clienteData?.razonSocial?.trim() ||
+    clienteData?.nombre?.trim() ||
+    "";
+
+  const subproductoLabel =
+    subproductosOpts.find((s) => s.value === subproducto)?.label || "";
+
+  const total = precioUnitario * cantidad;
+
+  const handleSave = async () => {
+    const payload = {
+      clientId: cliente,
+      productId: producto,
+      subProductId: subproducto,
+      quantity: cantidad,
+      observations: observaciones,
+      medioPago,
+      comentariosPago,
+      total,
+      createdAt: new Date().toISOString(),
+    };
+
+    const result = await makeRequest({ method: "post", data: payload });
+    setCreatedOrderId(result?.id ?? `MCK-${Date.now()}`);
+    setStep("success");
+  };
+
+  const handleReset = () => {
+    setStep("form");
+    setCliente("");
+    setProducto("anillados");
+    setSubproducto("");
+    setCantidad(11);
+    setObservaciones("");
+    setArchivo(null);
+    setMedioPago("");
+    setComentariosPago("");
+    setCreatedOrderId("");
+  };
+
+  if (step === "success") {
+    return (
+      <Box px={6} py={8} maxW="7xl" mx="auto">
+        <OrderSuccess
+          orderId={createdOrderId}
+          clienteLabel={clienteLabel}
+          productoLabel={selectedProduct?.label || ""}
+          subproductoLabel={subproductoLabel}
+          total={total}
+          onNuevoPedido={handleReset}
+        />
+      </Box>
+    );
+  }
+
+  if (step === "summary") {
+    return (
+      <Box px={6} py={8} maxW="7xl" mx="auto">
+        <OrderSummary
+          clienteLabel={clienteLabel}
+          productoLabel={selectedProduct?.label || ""}
+          subproductoLabel={subproductoLabel}
+          cantidad={cantidad}
+          precioUnitario={precioUnitario}
+          observaciones={observaciones}
+          medioPagoLabel={MEDIOS_PAGO_LABELS[medioPago] || medioPago}
+          comentariosPago={comentariosPago}
+          isSaving={isSaving}
+          onSave={handleSave}
+          onNuevoPedido={handleReset}
+        />
+      </Box>
+    );
+  }
 
   return (
     <Box px={6} py={8} maxW="7xl" mx="auto">
@@ -46,123 +131,42 @@ const CrearPedidoAdminPage = () => {
         gap={{ base: 8, md: 10 }}
         alignItems="start"
       >
-        <Stack gap={4}>
-          <Image
-            src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1200"
-            alt="Producto"
-            borderRadius="md"
-            objectFit="cover"
-            maxH="320px"
-          />
+        <OrderPreview
+          producto={selectedProduct?.label || ""}
+          cantidad={cantidad}
+          precioUnitario={precioUnitario}
+        />
 
-          <Text fontSize="sm" color="gray.600">
-            <Text as="span" fontWeight="semibold">
-              Producto:
-            </Text>{" "}
-            Anillados
-          </Text>
-
-          <Text fontSize="sm" color="gray.600" lineHeight="tall">
-            Este producto es para anillar copias que traes o para anillar copias
-            que vas a hacer con nosotros. Debes elegir el anillado que más se
-            acerque a la cantidad de hojas que vas a querer anillar (la cantidad
-            de hojas que se anillan depende del gramaje del papel. La referencia
-            indicada es estipulada para hoja A4 de 80g).
-            <br />
-            Podés elegir anillado plástico espiralado o anillado metálico
-            (ringwire). Incluye tapa y contratapa plástica.
-          </Text>
-
-          <Stack gap={1} color="gray.500" fontSize="xs">
-            <Text>x</Text>
-            <Text>11 impresiones</Text>
-          </Stack>
-
-          <Box borderTopWidth="1px" />
-          <Text fontSize="xl" fontWeight="semibold" color="gray.700">
-            Total: $ 0
-          </Text>
-        </Stack>
-
-        <Stack gap={5}>
-          <Heading size="md" color="gray.700">
-            ¿Qué querés cotizar?
-          </Heading>
-
-          <Fieldset.Root size="sm" gap={4}>
-            <Field.Root>
-              <Field.Label>Cliente</Field.Label>
-              <Select
-                options={clientesOpts}
-                value={cliente}
-                onChange={setCliente}
-                multiple={false}
-                placeholder="Seleccione un cliente"
-              />
-            </Field.Root>
-
-            <Field.Root>
-              <Field.Label>Producto</Field.Label>
-              <Select
-                options={productosOpts}
-                value={producto}
-                onChange={setProducto}
-                multiple={false}
-                placeholder="Seleccione un producto"
-              />
-            </Field.Root>
-
-            <Field.Root>
-              <Field.Label>Subproducto</Field.Label>
-              <Select
-                options={subproductosOpts}
-                value={subproducto}
-                onChange={setSubproducto}
-                multiple={false}
-                placeholder="Seleccione un subproducto"
-              />
-            </Field.Root>
-
-            <Field.Root>
-              <Field.Label>Cantidad</Field.Label>
-              <Input
-                type="number"
-                size="sm"
-                value={cantidad}
-                onChange={(e) => setCantidad(Number(e.target.value))}
-                min={1}
-              />
-            </Field.Root>
-
-            <Field.Root>
-              <Field.Label>Observaciones</Field.Label>
-              <Textarea
-                rows={4}
-                size="sm"
-                value={observaciones}
-                onChange={(e) => setObservaciones(e.target.value)}
-              />
-            </Field.Root>
-
-            <Field.Root>
-              <Field.Label>Seleccioná el archivo a imprimir</Field.Label>
-              <Input
-                type="file"
-                size="sm"
-                onChange={(e) => setArchivo(e.target.files?.[0] ?? null)}
-              />
-              <Text mt={1} fontSize="xs" color="gray.500">
-                Peso máximo 50MB
-              </Text>
-            </Field.Root>
-
-            <HStack>
-              <Button colorScheme="teal" size="sm">
-                CONTINUAR
-              </Button>
-            </HStack>
-          </Fieldset.Root>
-        </Stack>
+        <OrderForm
+          cliente={cliente}
+          setCliente={setCliente}
+          producto={producto}
+          setProducto={(val) => {
+            setProducto(val);
+            setSubproducto("");
+          }}
+          subproducto={subproducto}
+          setSubproducto={setSubproducto}
+          cantidad={cantidad}
+          setCantidad={setCantidad}
+          observaciones={observaciones}
+          setObservations={setObservaciones}
+          setArchivo={setArchivo}
+          medioPago={medioPago}
+          setMedioPago={setMedioPago}
+          comentariosPago={comentariosPago}
+          setComentariosPago={setComentariosPago}
+          onConfirm={() => setStep("summary")}
+          options={{
+            clientes: (orderData.clientes?.items || []).map((c) => ({
+              label:
+                c.empresa?.trim() || c.razonSocial?.trim() || c.nombre?.trim(),
+              value: String(c.id),
+            })),
+            productos: orderData.productos,
+            subproductos: subproductosOpts,
+          }}
+        />
       </Grid>
     </Box>
   );
