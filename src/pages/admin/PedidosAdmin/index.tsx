@@ -159,7 +159,7 @@ const PedidosAdminPage = () => {
         </Box>
         <Flex px={3} pb={3} gap={1}>
           {['<<', '<', '1', '2', '3', '>', '>>'].map((p) => (
-            <Button key={p} size="xs" variant={p === '1' ? 'solid' : 'outline'}>{p}</Button>
+            <Button key={p} size="xs" colorPalette="teal" variant={p === '1' ? 'solid' : 'outline'}>{p}</Button>
           ))}
         </Flex>
       </Card>

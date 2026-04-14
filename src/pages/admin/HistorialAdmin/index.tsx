@@ -93,7 +93,7 @@ const HistorialAdminPage: React.FC = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <IconButton size="sm" aria-label="buscar">
+            <IconButton size="sm" aria-label="buscar" colorPalette="teal" variant="outline">
               <LuSearch />
             </IconButton>
           </HStack>
@@ -127,6 +127,7 @@ const HistorialAdminPage: React.FC = () => {
               <Button
                 key={p}
                 size="xs"
+                colorPalette="teal"
                 variant={p === String(page) ? "solid" : "outline"}
               >
                 {p}

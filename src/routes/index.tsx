@@ -15,6 +15,7 @@ import {
   ConfiguracionesAdminPage,
   CotizadorAdminPage,
   PedidosAdminPage,
+  DetailOrderAdminPage,
   ProyectosAdminPage,
   ReportesAdminPage,
   StockAdminPage,
@@ -65,7 +66,7 @@ const AppRouter = () => (
           <Route path="/nuevo-pedido" element={<NuevoPedidoAdminPage />} />
           <Route path="/cotizador" element={<CotizadorAdminPage />} />
           <Route path="/pedidos-admin" element={<PedidosAdminPage />} />
-          <Route path="/pedidos-admin/:id" element={<DetailPage />} />
+          <Route path="/pedidos-admin/:id" element={<DetailOrderAdminPage />} />
           <Route path="/proyectos" element={<ProyectosAdminPage />} />
           <Route path="/cajas" element={<CajasAdminPage />} />
           <Route path="/compras" element={<ComprasAdminPage />} />
