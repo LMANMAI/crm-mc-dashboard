@@ -1,93 +1,114 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Box,
+  Button,
   Grid,
   GridItem,
-  Text,
-  Stack,
-  Button,
-  Input,
-  Textarea,
   HStack,
+  Input,
   Spinner,
+  Stack,
   Tag,
+  Text,
+  Textarea,
 } from "@chakra-ui/react";
+import { useParams, useLocation } from "react-router-dom";
 import { SectionBox, TitleWithIcon, Table } from "../../../components";
+import useFetch from "../../../hooks/useFetch";
+import { ORDERS } from "../../../config/constants";
 
-interface Order {
-  id: string;
-  fechaCarga: string;
-  cliente: string;
-  email: string;
-  trabajo: string;
-  fechaOrden: string;
-  estado: string;
-  precio: number;
-  subproducto: string;
-  medida: string;
-  cantidad: number;
-  terminaciones: string;
+// Shape que devuelve la API (json-server / backend)
+interface OrderApiResponse {
+  id: string | number;
+  clientId?: string;
+  productId?: string;
+  subProductId?: string;
+  quantity?: number;
+  observations?: string;
+  medioPago?: string;
+  comentariosPago?: string;
+  total?: number;
+  createdAt?: string;
+  // campos legacy / backend real
+  fechaCarga?: string;
+  cliente?: string;
+  email?: string;
+  trabajo?: string;
+  fechaOrden?: string;
+  estado?: string;
+  precio?: number;
+  subproducto?: string;
+  medida?: string;
+  cantidad?: number;
+  terminaciones?: string;
   archivoLink?: string;
-  observaciones?: string;
-  fechaEntrega: string;
-  pagos: Array<{ fecha: string; tipo: string; monto: number }>;
+  fechaEntrega?: string;
+  pagos?: Array<{ fecha: string; tipo: string; monto: number }>;
 }
 
+const pagosColumns = [
+  { header: "Fecha", accessor: "fecha" },
+  { header: "Tipo", accessor: "tipo" },
+  { header: "Monto", accessor: "monto", textAlign: "right" as const },
+];
+
 const DetailOrderClientePage: React.FC = () => {
-  const [order, setOrder] = useState<Order | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [mensaje, setMensaje] = useState("");
-  const [mensajes, setMensajes] = useState<string[]>([]);
+  const { id } = useParams<{ id: string }>();
+  const location = useLocation();
+  const stateOrder = location.state?.order as OrderApiResponse | undefined;
 
-  useEffect(() => {
-    setTimeout(() => {
-      setOrder({
-        id: "85201",
-        fechaCarga: "29/07/2025",
-        cliente: "javi.c97@hotmail.com",
-        email: "javi.c97@hotmail.com",
-        trabajo: "Anillados",
-        fechaOrden: "29/07/2025",
-        estado: "1. Pendiente",
-        precio: 2241,
-        subproducto: "Espiral plástico 9mm hasta 50 hojas",
-        medida: "0x0",
-        cantidad: 1,
-        terminaciones: "No posee",
-        archivoLink: "",
-        observaciones: "",
-        fechaEntrega: "29/07/2025",
-        pagos: [],
-      });
-      setLoading(false);
-    }, 800);
-  }, []);
+  const [mensaje, setMensaje] = React.useState("");
+  const [mensajes, setMensajes] = React.useState<string[]>([]);
 
-  if (loading || !order) {
+  const { data: apiOrder, isLoading, error } = useFetch<OrderApiResponse>(
+    ORDERS.GET(id!),
+    { useInitialFetch: true }
+  );
+
+  // Usar datos de la API si están disponibles, sino el state pasado por navigate
+  const order = apiOrder ?? stateOrder;
+
+  if (isLoading && !order) {
     return (
       <Box textAlign="center" py={20}>
-        <Spinner size="xl" />
+        <Spinner size="xl" color="teal.500" />
       </Box>
     );
   }
 
-  // columnas para "Pagos realizados"
-  const pagosColumns = [
-    { header: "Fecha", accessor: "fecha" },
-    { header: "Tipo", accessor: "tipo" },
-    {
-      header: "Monto",
-      accessor: "monto",
-      textAlign: "right" as const,
-    },
-  ];
+  if (!order) {
+    return (
+      <Box textAlign="center" py={20}>
+        <Text color="red.500" fontWeight="medium">
+          {error ?? "No se encontró el pedido."}
+        </Text>
+      </Box>
+    );
+  }
+
+  // Normalizar campos: soporta tanto el shape del backend real como el del mock POST
+  const displayId     = order.id;
+  const fechaCarga    = order.fechaCarga ?? order.createdAt?.slice(0, 10) ?? "—";
+  const cliente       = order.cliente ?? order.clientId ?? "—";
+  const email         = order.email ?? order.clientId ?? "—";
+  const trabajo       = order.trabajo ?? order.productId ?? "—";
+  const fechaOrden    = order.fechaOrden ?? order.createdAt?.slice(0, 10) ?? "—";
+  const estado        = order.estado ?? "1. Pendiente";
+  const precio        = order.precio ?? order.total ?? 0;
+  const subproducto   = order.subproducto ?? order.subProductId ?? "—";
+  const medida        = order.medida ?? "—";
+  const cantidad      = order.cantidad ?? order.quantity ?? 0;
+  const terminaciones = order.terminaciones ?? "No posee";
+  const observaciones = order.observations ?? order.observations ?? "";
+  const fechaEntrega  = order.fechaEntrega ?? "—";
+  const pagos         = order.pagos ?? [];
 
   return (
     <Stack gap={6} p={6}>
       <TitleWithIcon
         icon="📝"
-        title={`Order N° ${order.id}`}
-        subtitle={`Fecha de Carga ${order.fechaCarga}`}
+        title={`Order N° ${displayId}`}
+        subtitle={`Fecha de Carga: ${fechaCarga}`}
       />
 
       <Grid templateColumns="repeat(12, 1fr)" gap={4}>
@@ -96,27 +117,31 @@ const DetailOrderClientePage: React.FC = () => {
             <Stack gap={2}>
               <HStack>
                 <Text fontWeight="bold">Order N°:</Text>
-                <Text>{order.id}</Text>
+                <Text>{displayId}</Text>
               </HStack>
               <HStack>
                 <Text fontWeight="bold">Cliente:</Text>
-                <Text>{order.email}</Text>
+                <Text>{cliente}</Text>
+              </HStack>
+              <HStack>
+                <Text fontWeight="bold">Email:</Text>
+                <Text>{email}</Text>
               </HStack>
               <HStack>
                 <Text fontWeight="bold">Trabajo:</Text>
-                <Text>{order.trabajo}</Text>
+                <Text>{trabajo}</Text>
               </HStack>
               <HStack>
                 <Text fontWeight="bold">Fecha de la orden:</Text>
-                <Text>{order.fechaOrden}</Text>
+                <Text>{fechaOrden}</Text>
               </HStack>
               <HStack>
                 <Text fontWeight="bold">Estado:</Text>
-                <Tag.Root colorPalette="yellow">{order.estado}</Tag.Root>
+                <Tag.Root colorPalette="yellow"><Tag.Label>{estado}</Tag.Label></Tag.Root>
               </HStack>
               <HStack>
                 <Text fontWeight="bold">Precio:</Text>
-                <Text>${order.precio.toLocaleString()}</Text>
+                <Text>$ {precio.toLocaleString("es-AR")}</Text>
               </HStack>
             </Stack>
           </SectionBox>
@@ -127,23 +152,23 @@ const DetailOrderClientePage: React.FC = () => {
             <Stack gap={2}>
               <HStack>
                 <Text fontWeight="bold">Producto:</Text>
-                <Text>{order.trabajo}</Text>
+                <Text>{trabajo}</Text>
               </HStack>
               <HStack>
                 <Text fontWeight="bold">Sub-Producto:</Text>
-                <Text>{order.subproducto}</Text>
+                <Text>{subproducto}</Text>
               </HStack>
               <HStack>
                 <Text fontWeight="bold">Medida:</Text>
-                <Text>{order.medida}</Text>
+                <Text>{medida}</Text>
               </HStack>
               <HStack>
                 <Text fontWeight="bold">Cantidad:</Text>
-                <Text>{order.cantidad.toFixed(2)}</Text>
+                <Text>{Number(cantidad).toFixed(2)}</Text>
               </HStack>
               <HStack>
                 <Text fontWeight="bold">Terminaciones:</Text>
-                <Text>{order.terminaciones}</Text>
+                <Text>{terminaciones}</Text>
               </HStack>
               <HStack>
                 <Text fontWeight="bold">Archivo:</Text>
@@ -152,19 +177,15 @@ const DetailOrderClientePage: React.FC = () => {
               <HStack>
                 <Text fontWeight="bold">Link del Archivo:</Text>
                 <Input size="sm" placeholder="URL..." />
-                <Button size="sm">Subir</Button>
+                <Button size="sm" colorPalette="teal">Subir</Button>
               </HStack>
-              <HStack>
-                <Text fontWeight="bold">Observaciones:</Text>
-                <Textarea
-                  size="sm"
-                  value={order.observaciones}
-                  placeholder="Observaciones..."
-                />
+              <HStack alignItems="flex-start">
+                <Text fontWeight="bold" pt={1}>Observaciones:</Text>
+                <Textarea size="sm" defaultValue={observaciones} placeholder="Observaciones..." />
               </HStack>
               <HStack>
                 <Text fontWeight="bold">Fecha de entrega:</Text>
-                <Text>{order.fechaEntrega}</Text>
+                <Text>{fechaEntrega}</Text>
               </HStack>
             </Stack>
           </SectionBox>
@@ -174,7 +195,7 @@ const DetailOrderClientePage: React.FC = () => {
           <SectionBox title="Mensajes">
             <Stack gap={2}>
               {mensajes.length === 0 ? (
-                <Text color="gray.600">Aún no hay mensajes</Text>
+                <Text color="gray.500" fontSize="sm">Aún no hay mensajes.</Text>
               ) : (
                 mensajes.map((m, i) => <Text key={i}>{m}</Text>)
               )}
@@ -186,40 +207,40 @@ const DetailOrderClientePage: React.FC = () => {
                   onChange={(e) => setMensaje(e.target.value)}
                 />
                 <Button
-                  colorScheme="blue"
+                  colorPalette="teal"
                   onClick={() => {
                     if (!mensaje.trim()) return;
                     setMensajes((prev) => [...prev, mensaje.trim()]);
                     setMensaje("");
                   }}
                 >
-                  Enviar mensaje
+                  Enviar
                 </Button>
               </HStack>
             </Stack>
           </SectionBox>
         </GridItem>
 
-        <GridItem colSpan={12} /* md={4}*/>
+        <GridItem colSpan={12}>
           <Box bg="gray.100" p={4} borderRadius="md">
             <HStack justify="space-between">
               <Text>Total:</Text>
-              <Text fontWeight="bold">${order.precio.toLocaleString()}</Text>
+              <Text fontWeight="bold">$ {precio.toLocaleString("es-AR")}</Text>
             </HStack>
             <HStack justify="space-between">
               <Text>Total Pagos:</Text>
-              <Text fontWeight="bold">$0.00</Text>
+              <Text fontWeight="bold">$ 0,00</Text>
             </HStack>
             <HStack justify="space-between">
               <Text>Saldo:</Text>
-              <Text fontWeight="bold">${order.precio.toLocaleString()}</Text>
+              <Text fontWeight="bold">$ {precio.toLocaleString("es-AR")}</Text>
             </HStack>
           </Box>
         </GridItem>
 
-        <GridItem colSpan={12} /*md={8}*/>
+        <GridItem colSpan={12}>
           <SectionBox title="Pagos realizados">
-            <Table data={order.pagos} columns={pagosColumns} rowKey="fecha" />
+            <Table data={pagos} columns={pagosColumns} rowKey="fecha" />
           </SectionBox>
         </GridItem>
       </Grid>
