@@ -9,13 +9,13 @@ import FiltersDrawer from './components/FiltersDrawer';
 import DeliverDialog from './components/DeliverDialog';
 
 const SectionHeader = ({ children }: { children: React.ReactNode }) => (
-  <Box bg="teal.500" color="white" fontWeight="semibold" fontSize="sm" px="3" py="2" rounded="md">
+  <Box bg="teal.500" color="white" fontWeight="semibold" fontSize="sm" px="3" py="2" roundedTop="md">
     {children}
   </Box>
 );
 
 const Card = ({ children }: { children: React.ReactNode }) => (
-  <Box borderWidth="1px" rounded="md" bg="white" overflow="hidden">
+  <Box borderWidth="1px" rounded="md" bg="white">
     {children}
   </Box>
 );
@@ -99,7 +99,7 @@ const PedidosAdminPage = () => {
   }));
 
   return (
-    <Stack px={4} py={6} maxW="1400px" mx="auto" gap={6}>
+    <Stack px={4} py={6} gap={6}>
       <Card>
         <SectionHeader>Todos los pedidos</SectionHeader>
         <Flex p={3} justify="space-between" gap={3} wrap="wrap">
@@ -155,7 +155,7 @@ const PedidosAdminPage = () => {
           </HStack>
         </Flex>
         <Box px={3} pb={3} overflowX="auto">
-          <Table data={tableData} columns={columns} rowKey="id" />
+          <Table data={tableData} columns={columns} rowKey="id" minW="1200px" />
         </Box>
         <Flex px={3} pb={3} gap={1}>
           {['<<', '<', '1', '2', '3', '>', '>>'].map((p) => (

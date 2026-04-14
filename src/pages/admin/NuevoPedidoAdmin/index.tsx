@@ -63,7 +63,7 @@ const NuevoPedidoAdminPage = () => {
   };
 
   return (
-    <Stack px={4} py={6} maxW="1400px" mx="auto" gap={6}>
+    <Stack px={4} py={6} gap={6}>
       <Text fontSize="2xl" fontWeight="bold" color="gray.700">
         Nuevo Pedido
       </Text>

@@ -54,7 +54,7 @@ const EstadosAdminPage = () => {
   );
 
   return (
-    <Stack gap={4}>
+    <Stack gap={4} w="100%">
       <AdminPageToolbar
         title="Estados"
         searchValue={search}
@@ -63,7 +63,7 @@ const EstadosAdminPage = () => {
       />
 
       <Box borderWidth="1px" borderColor="gray.200" rounded="md" overflow="hidden">
-        <Table data={data} columns={columns} rowKey="id" size="sm" />
+        <Table data={data} columns={columns} rowKey="id" size="sm" variant="line" />
         <Box bg="gray.200" px={4} py={3}>
           <HStack gap={2}>
             <Button size="xs" variant="subtle">«</Button>

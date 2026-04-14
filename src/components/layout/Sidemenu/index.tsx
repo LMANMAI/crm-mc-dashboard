@@ -6,7 +6,6 @@ import {
   Text,
   IconButton,
   Flex,
-  Collapsible,
 } from "@chakra-ui/react";
 import {
   FaClipboardList,
@@ -21,11 +20,8 @@ import {
   FaBox,
   FaUsers,
   FaCog,
-  FaChevronDown,
-  FaChevronRight,
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
-import { Tooltip } from "../../ui/tooltip";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../store";
 
@@ -61,7 +57,6 @@ const menuByRole: Record<string, any[]> = {
       section: "OPERATIVO",
       items: [
         { label: "Crear pedido", icon: FaShoppingCart, to: "/crear-pedido" },
-
         { label: "Cotizador digital", icon: FaShoppingCart, to: "/cotizador" },
         { label: "Pedidos", icon: FaClipboardList, to: "/pedidos" },
         { label: "Proyectos", icon: FaBox, to: "/proyectos" },
@@ -153,15 +148,42 @@ const menuByRole: Record<string, any[]> = {
   ],
 };
 
+const NavItem = ({
+  link,
+  showLabel,
+}: {
+  link: any;
+  showLabel: boolean;
+}) => (
+  <NavLink to={link.to} style={{ textDecoration: "none" }}>
+    {({ isActive }) => (
+      <Flex
+        align="center"
+        justify={showLabel ? "flex-start" : "center"}
+        gap={showLabel ? 3 : 0}
+        px={showLabel ? 3 : 2}
+        py={2}
+        borderRadius="md"
+        bg={isActive ? "teal.500" : "transparent"}
+        fontWeight={isActive ? "bold" : "normal"}
+        _hover={{ bg: isActive ? "teal.700" : "teal.100" }}
+      >
+        <Icon as={link.icon} color={isActive ? "white" : "teal.600"} />
+        {showLabel && (
+          <Text fontSize="sm" color={isActive ? "white" : "teal.700"}>
+            {link.label}
+          </Text>
+        )}
+      </Flex>
+    )}
+  </NavLink>
+);
+
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
+  const [hoveredSection, setHoveredSection] = useState<number | null>(null);
   const userRol = useSelector((state: RootState) => state.auth.user?.rol);
   const sections = menuByRole[userRol || "user_cliente"] || [];
-
-  const toggleSection = (title: string) => {
-    setOpenSections((prev) => ({ ...prev, [title]: !prev[title] }));
-  };
 
   return (
     <Box
@@ -170,6 +192,7 @@ const Sidebar = () => {
       minH="calc(100vh - 56px)"
       p={3}
       transition="width 0.3s ease"
+      position="relative"
     >
       <IconButton
         variant="ghost"
@@ -181,134 +204,88 @@ const Sidebar = () => {
         {collapsed ? <FaBars /> : <FaAngleLeft />}
       </IconButton>
 
-      <VStack align="stretch" gap={2}>
-        {sections.map((section, index) => (
-          <Box key={index}>
-            {collapsed ? (
-              <VStack align="stretch" gap={1}>
-                {section.items.map((link: any) => (
-                  <Tooltip key={link.label} content={link.label}>
-                    <NavLink
-                      to={link.to}
-                      style={() => ({ textDecoration: "none" })}
-                    >
-                      {({ isActive }) => (
-                        <Flex
-                          align="center"
-                          justify="center"
-                          px={2}
-                          py={2}
-                          borderRadius="md"
-                          bg={isActive ? "teal.500" : "transparent"}
-                          _hover={{ bg: isActive ? "teal.700" : "teal.100" }}
-                        >
-                          <Icon
-                            as={link.icon}
-                            color={!isActive ? "teal" : "white"}
-                          />
-                        </Flex>
-                      )}
-                    </NavLink>
-                  </Tooltip>
-                ))}
-              </VStack>
-            ) : section.section ? (
-              <Collapsible.Root open={openSections[section.section]}>
-                <Collapsible.Trigger
-                  onClick={() => toggleSection(section.section)}
-                  paddingY="3"
+      <VStack align="stretch" gap={collapsed ? 1 : 4}>
+        {sections.map((section, index) =>
+          collapsed ? (
+            // — COLLAPSED: 1 icon per section, flyout on hover —
+            <Box
+              key={index}
+              position="relative"
+              onMouseEnter={() => setHoveredSection(index)}
+              onMouseLeave={() => setHoveredSection(null)}
+            >
+              {index > 0 && (
+                <Box borderTop="1px solid" borderColor="gray.300" mb={1} />
+              )}
+              {/* Single representative icon for the section */}
+              <Flex
+                align="center"
+                justify="center"
+                px={2}
+                py={2}
+                borderRadius="md"
+                cursor="default"
+                _hover={{ bg: "teal.100" }}
+              >
+                <Icon as={section.items[0].icon} color="teal.600" />
+              </Flex>
+
+              {hoveredSection === index && (
+                <Box
+                  position="absolute"
+                  left="calc(100% + 6px)"
+                  top={0}
+                  bg="white"
+                  shadow="lg"
+                  borderRadius="md"
+                  p={2}
+                  minW="190px"
+                  zIndex={1000}
+                  border="1px solid"
+                  borderColor="gray.200"
                 >
-                  <Flex align="center" justify="space-between" px={2}>
-                    <Text fontSize="xs" fontWeight="bold" color="gray.600">
+                  {section.section && (
+                    <Text
+                      fontSize="xs"
+                      fontWeight="bold"
+                      color="gray.500"
+                      px={2}
+                      mb={1}
+                    >
                       {section.section}
                     </Text>
-                    <Icon
-                      as={
-                        openSections[section.section]
-                          ? FaChevronDown
-                          : FaChevronRight
-                      }
-                      boxSize={3}
-                    />
-                  </Flex>
-                </Collapsible.Trigger>
-                <Collapsible.Content>
-                  <VStack align="stretch" pl={2} gap={1} mt={1}>
+                  )}
+                  <VStack align="stretch" gap={1}>
                     {section.items.map((link: any) => (
-                      <Tooltip key={link.label} content={link.label}>
-                        <NavLink
-                          to={link.to}
-                          style={() => ({ textDecoration: "none" })}
-                        >
-                          {({ isActive }) => (
-                            <Flex
-                              align="center"
-                              gap={3}
-                              px={3}
-                              py={2}
-                              borderRadius="md"
-                              bg={isActive ? "teal.500" : "transparent"}
-                              fontWeight={isActive ? "bold" : "normal"}
-                              _hover={{
-                                bg: isActive ? "teal.700" : "teal.100",
-                              }}
-                            >
-                              <Icon
-                                as={link.icon}
-                                color={!isActive ? "teal" : "white"}
-                              />
-                              <Text
-                                fontSize="sm"
-                                color={!isActive ? "teal" : "white"}
-                              >
-                                {link.label}
-                              </Text>
-                            </Flex>
-                          )}
-                        </NavLink>
-                      </Tooltip>
+                      <NavItem key={link.label} link={link} showLabel={true} />
                     ))}
                   </VStack>
-                </Collapsible.Content>
-              </Collapsible.Root>
-            ) : (
-              <VStack align="stretch" pl={2} gap={1} mt={1}>
+                </Box>
+              )}
+            </Box>
+          ) : (
+            // — EXPANDED: sections always visible —
+            <Box key={index}>
+              {section.section && (
+                <Text
+                  fontSize="xs"
+                  fontWeight="bold"
+                  color="gray.500"
+                  px={2}
+                  mb={1}
+                  letterSpacing="wide"
+                >
+                  {section.section}
+                </Text>
+              )}
+              <VStack align="stretch" gap={1}>
                 {section.items.map((link: any) => (
-                  <Tooltip key={link.label} content={link.label}>
-                    <NavLink
-                      to={link.to}
-                      style={() => ({ textDecoration: "none" })}
-                    >
-                      {({ isActive }) => (
-                        <Flex
-                          align="center"
-                          gap={3}
-                          px={3}
-                          py={2}
-                          borderRadius="md"
-                          bg={isActive ? "teal.500" : "transparent"}
-                          fontWeight={isActive ? "bold" : "normal"}
-                          _hover={{ bg: isActive ? "teal.700" : "teal.100" }}
-                        >
-                          <Icon
-                            as={link.icon}
-                            color={!isActive ? "teal" : "white"}
-                          />
-                          <Text
-                            fontSize="sm"
-                            color={!isActive ? "teal" : "white"}
-                          >
-                            {link.label}
-                          </Text>
-                        </Flex>
-                      )}
-                    </NavLink>
-                  </Tooltip>
+                  <NavItem key={link.label} link={link} showLabel={true} />
                 ))}
               </VStack>
-            )}
-          </Box>
-        ))}
+            </Box>
+          )
+        )}
       </VStack>
     </Box>
   );
