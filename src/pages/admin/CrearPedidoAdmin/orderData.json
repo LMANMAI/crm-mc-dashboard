@@ -1,0 +1,36 @@
+{
+  "clientes": {
+    "items": [
+      { "id": 1, "empresa": "Cliente Demo S.A." },
+      { "id": 2, "razonSocial": "Empresa Ejemplo S.R.L." },
+      { "id": 3, "nombre": "Juan Pérez" }
+    ]
+  },
+  "productos": [
+    {
+      "value": "anillados",
+      "label": "Anillados",
+      "subproductos": [
+        { "value": "a4_color", "label": "A4 Color", "precio": 1500 },
+        { "value": "a4_byn", "label": "A4 B&N", "precio": 800 },
+        { "value": "a3_color", "label": "A3 Color", "precio": 2500 }
+      ]
+    },
+    {
+      "value": "impresion",
+      "label": "Impresión",
+      "subproductos": [
+        { "value": "simple", "label": "Simple", "precio": 500 },
+        { "value": "doble", "label": "Doble faz", "precio": 900 }
+      ]
+    },
+    {
+      "value": "encuadernado",
+      "label": "Encuadernado",
+      "subproductos": [
+        { "value": "tapa_dura", "label": "Tapa dura", "precio": 3000 },
+        { "value": "tapa_blanda", "label": "Tapa blanda", "precio": 2000 }
+      ]
+    }
+  ]
+}
