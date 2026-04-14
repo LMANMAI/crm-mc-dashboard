@@ -1,0 +1,64 @@
+name: Backport to develop
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+
+jobs:
+  backport:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configurar Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Cherry-pick commits a develop
+        id: backport
+        run: |
+          git fetch origin develop || echo "develop no existe aún"
+          git checkout develop || git checkout -b develop origin/master
+
+          # Obtener los commits del PR mergeado
+          MERGE_COMMIT=${{ github.event.pull_request.merge_commit_sha }}
+          BASE=${{ github.event.pull_request.base.sha }}
+          HEAD=${{ github.event.pull_request.head.sha }}
+
+          # Cherry-pick todos los commits del PR
+          git cherry-pick --no-merges $BASE..$HEAD || {
+            echo "Conflicto en cherry-pick — se crea branch manual"
+            git cherry-pick --abort || true
+            BACKPORT_BRANCH="backport/${{ github.event.pull_request.number }}-to-develop"
+            git checkout -b $BACKPORT_BRANCH origin/develop || git checkout -b $BACKPORT_BRANCH origin/master
+            git cherry-pick --no-merges $BASE..$HEAD || true
+            git push origin $BACKPORT_BRANCH
+            echo "branch=$BACKPORT_BRANCH" >> $GITHUB_OUTPUT
+            echo "conflict=true" >> $GITHUB_OUTPUT
+            exit 0
+          }
+
+          git push origin develop
+          echo "conflict=false" >> $GITHUB_OUTPUT
+
+      - name: Crear PR de backport si hubo conflicto
+        if: steps.backport.outputs.conflict == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `[Backport] ${{ github.event.pull_request.title }}`,
+              head: `backport/${{ github.event.pull_request.number }}-to-develop`,
+              base: 'develop',
+              body: `Backport automático del PR #${{ github.event.pull_request.number }} hacia \`develop\`.\n\n⚠️ Hubo conflictos — revisión manual requerida.`,
+            });
