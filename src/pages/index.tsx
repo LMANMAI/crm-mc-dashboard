@@ -13,6 +13,7 @@ export { default as ClienteScreen } from "./cliente/Cliente";
 export { default as DetailPage } from "./cliente/DetailOrderCliente";
 
 //admin
+export { default as DetailOrderAdminPage } from "./admin/DetailOrderAdmin";
 export { default as CajasAdminPage } from "./admin/CajasAdmin";
 export { default as ComprasAdminPage } from "./admin/ComprasAdmin";
 export { default as CotizadorAdminPage } from "./admin/CotizadorAdmin";

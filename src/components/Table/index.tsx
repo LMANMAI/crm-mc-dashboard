@@ -14,6 +14,7 @@ interface CustomTableProps<T> {
   onRowClick?: (row: T) => void;
   size?: "sm" | "md" | "lg";
   variant?: "outline" | "line";
+  minW?: string;
 }
 
 function CustomTable<T extends Record<string, any>>({
@@ -23,9 +24,10 @@ function CustomTable<T extends Record<string, any>>({
   onRowClick,
   size = "sm",
   variant = "outline",
+  minW,
 }: CustomTableProps<T>) {
   return (
-    <Table.Root size={size} variant={variant}>
+    <Table.Root size={size} variant={variant} minW={minW} w="100%">
       <Table.Header>
         {columns.map((col) => (
           <Table.ColumnHeader
