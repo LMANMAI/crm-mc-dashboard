@@ -61,11 +61,27 @@ jobs:
         with:
           script: |
             const conflict = '${{ steps.backport.outputs.conflict }}' === 'true';
-            await github.rest.pulls.create({
+            const branch = '${{ steps.backport.outputs.branch }}';
+
+            // Verificar si ya existe un PR abierto para esta branch
+            const { data: existing } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: `${context.repo.owner}:${branch}`,
+              base: 'develop',
+              state: 'open',
+            });
+
+            if (existing.length > 0) {
+              console.log(`PR ya existe: ${existing[0].html_url}`);
+              return;
+            }
+
+            const pr = await github.rest.pulls.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: `[Backport] ${{ github.event.pull_request.title }}`,
-              head: `${{ steps.backport.outputs.branch }}`,
+              head: branch,
               base: 'develop',
               body: [
                 `Backport automático del PR #${{ github.event.pull_request.number }} hacia \`develop\`.`,
@@ -75,3 +91,4 @@ jobs:
                   : '✅ Cherry-pick aplicado sin conflictos. Revisión manual antes de mergear.',
               ].join('\n'),
             });
+            console.log(`PR creado: ${pr.data.html_url}`);
