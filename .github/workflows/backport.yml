@@ -35,12 +35,14 @@ jobs:
           git fetch origin develop || echo "develop no existe aún"
           git checkout -b $BACKPORT_BRANCH origin/develop 2>/dev/null || git checkout -b $BACKPORT_BRANCH origin/master
 
-          git cherry-pick --no-merges $BASE..$HEAD && {
+          if git cherry-pick --no-merges $BASE..$HEAD; then
             echo "conflict=false" >> $GITHUB_OUTPUT
-          } || {
-            git cherry-pick --abort || true
+          else
+            # Commitear el estado con conflict markers para que haya diff
+            git add -A
+            git commit -m "backport: cherry-pick con conflictos — revisión manual requerida"
             echo "conflict=true" >> $GITHUB_OUTPUT
-          }
+          fi
 
           git push origin $BACKPORT_BRANCH
           echo "branch=$BACKPORT_BRANCH" >> $GITHUB_OUTPUT
