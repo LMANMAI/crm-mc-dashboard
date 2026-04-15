@@ -25,4 +25,20 @@
 - **Variables de Entorno Necesarias:** - `VAR_NAME=value`
 - **Pasos previos al deploy:** [Ej: Correr migraciones, actualizar secrets en Vercel/Render, etc.]
 
+## ✅ Checklist del autor
+
+- [ ] El código compila sin errores (`npm run build`)
+- [ ] No hay warnings nuevos de TypeScript o ESLint
+- [ ] Se probó manualmente el flujo principal (golden path)
+- [ ] No se introdujeron datos sensibles (tokens, contraseñas, endpoints reales)
+- [ ] El PR apunta a la branch correcta (`develop` para features, `master` para hotfixes)
+
+## 👀 Checklist del revisor
+
+- [ ] El código es legible y sigue las convenciones del proyecto
+- [ ] No hay lógica duplicada o abstracciones innecesarias
+- [ ] Los cambios visuales fueron revisados en el navegador
+- [ ] No hay regresiones visibles en otras partes de la app
+- [ ] El PR está listo para mergear
+
 ---
