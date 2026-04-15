@@ -13,6 +13,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      workflows: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,8 +33,17 @@ jobs:
           BASE=${{ github.event.pull_request.base.sha }}
           HEAD=${{ github.event.pull_request.head.sha }}
 
+          # Exportar branch name antes de cualquier fallo
+          echo "branch=$BACKPORT_BRANCH" >> $GITHUB_OUTPUT
+
           git fetch origin develop || echo "develop no existe aún"
-          git checkout -b $BACKPORT_BRANCH origin/develop 2>/dev/null || git checkout -b $BACKPORT_BRANCH origin/master
+
+          # Si la branch remota ya existe (re-run), usarla; sino crear desde develop o master
+          if git ls-remote --exit-code origin $BACKPORT_BRANCH; then
+            git checkout -b $BACKPORT_BRANCH origin/$BACKPORT_BRANCH
+          else
+            git checkout -b $BACKPORT_BRANCH origin/develop 2>/dev/null || git checkout -b $BACKPORT_BRANCH origin/master
+          fi
 
           if git cherry-pick --no-merges $BASE..$HEAD; then
             echo "conflict=false" >> $GITHUB_OUTPUT
@@ -45,7 +55,6 @@ jobs:
           fi
 
           git push origin $BACKPORT_BRANCH
-          echo "branch=$BACKPORT_BRANCH" >> $GITHUB_OUTPUT
 
       - name: Crear PR de backport
         uses: actions/github-script@v7
