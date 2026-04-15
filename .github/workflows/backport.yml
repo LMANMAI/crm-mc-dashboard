@@ -45,17 +45,25 @@ jobs:
       - name: Cherry-pick commits
         id: cherrypick
         run: |
-          BASE=${{ github.event.pull_request.base.sha }}
-          HEAD=${{ github.event.pull_request.head.sha }}
+          MERGE_SHA=${{ github.event.pull_request.merge_commit_sha }}
 
-          if git cherry-pick --no-merges $BASE..$HEAD; then
+          # Detectar si es merge commit (2 parents) o squash/rebase (1 parent)
+          PARENT_COUNT=$(git cat-file -p $MERGE_SHA | grep -c "^parent")
+
+          if [ "$PARENT_COUNT" -gt 1 ]; then
+            CHERRY_CMD="git cherry-pick -m 1 $MERGE_SHA"
+          else
+            CHERRY_CMD="git cherry-pick $MERGE_SHA"
+          fi
+
+          if $CHERRY_CMD; then
             echo "conflict=false" >> $GITHUB_OUTPUT
           else
             # Excluir archivos de workflows para evitar restricción de GITHUB_TOKEN
             git checkout HEAD -- .github/workflows/ 2>/dev/null || true
             git add -A
             if git diff --cached --quiet; then
-              echo "Los únicos cambios eran en .github/workflows/ — nada para backportear"
+              echo "Solo cambios en .github/workflows/ — nada para backportear"
               echo "skip=true" >> $GITHUB_OUTPUT
               exit 0
             fi
