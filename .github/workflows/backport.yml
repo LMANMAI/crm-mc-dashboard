@@ -14,6 +14,7 @@ jobs:
       contents: write
       pull-requests: write
       workflows: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,46 +27,69 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Cherry-pick commits a branch de backport
-        id: backport
+      - name: Crear branch de backport
+        id: branch
         run: |
           BACKPORT_BRANCH="backport/${{ github.event.pull_request.number }}-to-develop"
-          BASE=${{ github.event.pull_request.base.sha }}
-          HEAD=${{ github.event.pull_request.head.sha }}
+          echo "name=$BACKPORT_BRANCH" >> $GITHUB_OUTPUT
 
-          # Exportar branch name antes de cualquier fallo
-          echo "branch=$BACKPORT_BRANCH" >> $GITHUB_OUTPUT
+          git fetch origin develop 2>/dev/null || true
 
-          git fetch origin develop || echo "develop no existe aún"
-
-          # Si la branch remota ya existe (re-run), usarla; sino crear desde develop o master
-          if git ls-remote --exit-code origin $BACKPORT_BRANCH; then
+          if git ls-remote --exit-code origin $BACKPORT_BRANCH > /dev/null 2>&1; then
+            echo "Branch ya existe, reutilizando"
             git checkout -b $BACKPORT_BRANCH origin/$BACKPORT_BRANCH
           else
-            git checkout -b $BACKPORT_BRANCH origin/develop 2>/dev/null || git checkout -b $BACKPORT_BRANCH origin/master
+            git checkout -b $BACKPORT_BRANCH origin/develop 2>/dev/null \
+              || git checkout -b $BACKPORT_BRANCH origin/master
           fi
+
+      - name: Cherry-pick commits
+        id: cherrypick
+        run: |
+          BASE=${{ github.event.pull_request.base.sha }}
+          HEAD=${{ github.event.pull_request.head.sha }}
 
           if git cherry-pick --no-merges $BASE..$HEAD; then
             echo "conflict=false" >> $GITHUB_OUTPUT
           else
-            # Commitear el estado con conflict markers para que haya diff
             git add -A
             git commit -m "backport: cherry-pick con conflictos — revisión manual requerida"
             echo "conflict=true" >> $GITHUB_OUTPUT
           fi
 
-          git push origin $BACKPORT_BRANCH
+          git push origin ${{ steps.branch.outputs.name }}
 
-      - name: Crear PR de backport
+      - name: Crear PR
+        if: always()
         uses: actions/github-script@v7
         with:
           script: |
-            const conflict = '${{ steps.backport.outputs.conflict }}' === 'true';
-            await github.rest.pulls.create({
+            const branch = '${{ steps.branch.outputs.name }}';
+            const conflict = '${{ steps.cherrypick.outputs.conflict }}' === 'true';
+
+            if (!branch) {
+              core.setFailed('branch output vacío — revisar step anterior');
+              return;
+            }
+
+            const { data: existing } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: `${context.repo.owner}:${branch}`,
+              base: 'develop',
+              state: 'open',
+            });
+
+            if (existing.length > 0) {
+              console.log(`PR ya existe: ${existing[0].html_url}`);
+              return;
+            }
+
+            const pr = await github.rest.pulls.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: `[Backport] ${{ github.event.pull_request.title }}`,
-              head: `${{ steps.backport.outputs.branch }}`,
+              head: branch,
               base: 'develop',
               body: [
                 `Backport automático del PR #${{ github.event.pull_request.number }} hacia \`develop\`.`,
@@ -75,3 +99,5 @@ jobs:
                   : '✅ Cherry-pick aplicado sin conflictos. Revisión manual antes de mergear.',
               ].join('\n'),
             });
+
+            console.log(`PR creado: ${pr.data.html_url}`);
